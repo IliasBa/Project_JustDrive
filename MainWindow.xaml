@@ -1,0 +1,40 @@
+﻿<Window x:Class="Project_JustDrive.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="JustDrive" Height="450" Width="800"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid Background="#1e293b">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="350">
+
+            <TextBlock Text="JustDrive" FontSize="36" FontWeight="Bold"
+                       Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Welkom terug" FontSize="14"
+                       Foreground="#94a3b8" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+            <TextBlock Text="Email" Foreground="White" Margin="0,0,0,5"/>
+            <TextBox x:Name="TxtEmail" Height="40" Padding="10"
+                     Background="#334155" Foreground="White"
+                     BorderThickness="0" FontSize="14"/>
+
+            <TextBlock Text="Wachtwoord" Foreground="White" Margin="0,15,0,5"/>
+            <PasswordBox x:Name="TxtPassword" Height="40" Padding="10"
+                         Background="#334155" Foreground="White"
+                         BorderThickness="0" FontSize="14"/>
+
+            <Button x:Name="BtnLogin" Content="Inloggen"
+                    Height="45" Margin="0,25,0,0"
+                    Background="#4f46e5" Foreground="White"
+                    FontSize="16" FontWeight="Bold"
+                    BorderThickness="0" Cursor="Hand"
+                    Click="BtnLogin_Click"/>
+
+            <TextBlock Text="Nog geen account? Registreer hier"
+                       Foreground="#4f46e5" HorizontalAlignment="Center"
+                       Margin="0,15,0,0" Cursor="Hand"
+                       MouseLeftButtonUp="TxtRegister_Click"/>
+
+        </StackPanel>
+    </Grid>
+</Window>
