@@ -113,8 +113,9 @@
                 <StackPanel Grid.Row="1">
                     <Button Style="{StaticResource NavButtonActive}" Content="🏠   Home"/>
                     <Button Style="{StaticResource NavButton}" Content="🚗   Huur auto"
-                            Click="BtnHuurAuto_Click"/>
-                    <Button Style="{StaticResource NavButton}" Content="♥    Favorieten"/>
+                            Click="HuurAuto_Click"/>
+                    <Button Style="{StaticResource NavButton}" Content="♥    Favorieten"
+                            />
                     <Button Style="{StaticResource NavButton}" Content="📅   Mijn reservaties"/>
                     <Button Style="{StaticResource NavButton}" Content="👤   Profiel"/>
                 </StackPanel>
@@ -135,7 +136,7 @@
                     </Border>
                     <Button Style="{StaticResource NavButton}" Content="⎋   Uitloggen"
                             Background="#0A1422" Margin="0"
-                            Click="BtnUitloggen_Click"/>
+                            Click="Uitloggen_Click"/>
                 </StackPanel>
             </Grid>
         </Border>

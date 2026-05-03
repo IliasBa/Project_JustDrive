@@ -12,7 +12,7 @@ namespace Project_JustDrive
             InitializeComponent();
         }
 
-        private void BtnLogin_Click(object sender, RoutedEventArgs e)
+        private void Login_Click(object sender, RoutedEventArgs e)
         {
             string email = TxtEmail.Text;
             string password = TxtPassword.Password;

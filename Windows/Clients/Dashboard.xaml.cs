@@ -17,33 +17,33 @@ namespace Project_JustDrive.Windows.Clients
         {
         }
 
-        private void BtnZoeken_Click(object sender, RoutedEventArgs e)
+        private void Zoeken_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Auto's zoeken komt binnenkort!");
         }
-        private void BtnHuurAuto_Click(object sender, RoutedEventArgs e)
+        private void HuurAuto_Click(object sender, RoutedEventArgs e)
         {
-            RentCar rentCarWindow = new RentCar();
+            RentCar rentCarWindow = new RentCar(_userId);
             rentCarWindow.Show();
             this.Close();
         }
 
-        private void BtnReservaties_Click(object sender, RoutedEventArgs e)
+        private void Reservaties_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Reservaties komt binnenkort!");
         }
 
-        private void BtnFavorieten_Click(object sender, RoutedEventArgs e)
+        private void Favorieten_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Favorieten komt binnenkort!");
         }
 
-        private void BtnProfiel_Click(object sender, RoutedEventArgs e)
+        private void Profiel_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Profiel komt binnenkort!");
         }
 
-        private void BtnUitloggen_Click(object sender, RoutedEventArgs e)
+        private void Uitloggen_Click(object sender, RoutedEventArgs e)
         {
             MainWindow login = new MainWindow();
             login.Show();

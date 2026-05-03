@@ -15,26 +15,27 @@ using System.Windows.Shapes;
 
 namespace Project_JustDrive.Windows.Clients
 {
-    /// <summary>
-    /// Interaction logic for RentCar.xaml
-    /// </summary>
+
     public partial class RentCar : Window
     {
         public List<Car> Cars { get; set; }
+        private List<Car> AllCars = new List<Car>();
+        private int _userId;
+        private string ActiveFilter = "Alle";
 
-        public RentCar()
+        public RentCar(int userId)
         {
             InitializeComponent();
 
             LoadCarsFromDatabase();
 
             DataContext = this;
+            _userId = userId;
         }
 
-        // 👇 HIER komt die methode
         private void LoadCarsFromDatabase()
         {
-            Cars = new List<Car>();
+            AllCars = new List<Car>();
 
             using (MySqlConnection conn = DatabaseConnection.GetConnection())
             {
@@ -47,8 +48,9 @@ namespace Project_JustDrive.Windows.Clients
 
                 while (reader.Read())
                 {
-                    Cars.Add(new Car
+                    AllCars.Add(new Car
                     {
+                        Id = Convert.ToInt32(reader["Id"]),
                         CarBrand = reader["Car_Brand"].ToString(),
                         Type = reader["TYPE"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
@@ -57,18 +59,81 @@ namespace Project_JustDrive.Windows.Clients
                     });
                 }
             }
+
+            Cars = new List<Car>(AllCars);
+        }
+
+        private void ApplyFilters(string searchText = "")
+        {
+            var filtered = AllCars.AsEnumerable();
+
+            // Filter op type
+            if (ActiveFilter != "Alle")
+            {
+                if (ActiveFilter == "Elektrisch")
+                    filtered = filtered.Where(c => c.Fuel == "Electric");
+                else
+                    filtered = filtered.Where(c => c.Type == ActiveFilter);
+            }
+
+            // Filter op zoekterm
+            if (!string.IsNullOrEmpty(searchText))
+            {
+                filtered = filtered.Where(c =>
+                    c.CarBrand.ToLower().Contains(searchText.ToLower()) ||
+                    c.Type.ToLower().Contains(searchText.ToLower()));
+            }
+
+            Cars = filtered.ToList();
+            ItemsControlCars.ItemsSource = Cars;
+        }
+
+        private void FilterAlle_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveFilter = "Alle";
+            ApplyFilters(TxtZoek.Text);
+        }
+        private void FilterSport_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveFilter = "Sport";
+            ApplyFilters(TxtZoek.Text);
+        }
+
+        private void FilterSUV_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveFilter = "SUV";
+            ApplyFilters(TxtZoek.Text);
+        }
+
+        private void FilterElektrisch_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveFilter = "Elektrisch";
+            ApplyFilters(TxtZoek.Text);
+        }
+
+        private void FilterCompact_Click(object sender, RoutedEventArgs e)
+        {
+            ActiveFilter = "Hatchback";
+            ApplyFilters(TxtZoek.Text);
+        }
+
+        private void TxtZoek_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            ApplyFilters(TxtZoek.Text);
+        }
+        private void HuurNu_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            Car geselecteerdeAuto = btn.DataContext as Car;
+
+            CarDetail detailWindow = new CarDetail(geselecteerdeAuto.Id, _userId);
+            detailWindow.Show();
+            this.Close();
         }
         private void Dashboard_Click(object sender, RoutedEventArgs e)
         {
-            foreach (Window w in Application.Current.Windows)
-            {
-                if (w is Dashboard)
-                {
-                    w.Show();
-                    break;
-                }
-            }
-
+            Dashboard dashboard = new Dashboard(_userId);
+            dashboard.Show();
             this.Close();
         }
         private void Uitloggen_Click(object sender, RoutedEventArgs e)

@@ -23,12 +23,12 @@
                          Background="#334155" Foreground="White"
                          BorderThickness="0" FontSize="14"/>
 
-            <Button x:Name="BtnLogin" Content="Inloggen"
+            <Button x:Name="Login" Content="Inloggen"
                     Height="45" Margin="0,25,0,0"
                     Background="#4f46e5" Foreground="White"
                     FontSize="16" FontWeight="Bold"
                     BorderThickness="0" Cursor="Hand"
-                    Click="BtnLogin_Click"/>
+                    Click="Login_Click"/>
 
             <TextBlock Text="Nog geen account? Registreer hier"
                        Foreground="#4f46e5" HorizontalAlignment="Center"

@@ -192,8 +192,11 @@
 
                     <Border Grid.Column="0" Background="#F5F6F8" CornerRadius="8" Padding="14,10">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="🔍" Foreground="{StaticResource TextMuted}" Margin="0,0,8,0"/>
-                            <TextBlock Text="Zoek naar je droomauto..." Foreground="{StaticResource TextMuted}"/>
+                            <TextBlock Text="🔍" Foreground="{StaticResource TextMuted}" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                            <TextBox x:Name="TxtZoek" Background="Transparent" BorderThickness="0"
+                                     Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center"
+                                     Width="400" FontSize="14"
+                                     TextChanged="TxtZoek_TextChanged"/>
                         </StackPanel>
                     </Border>
 
@@ -216,15 +219,20 @@
 
                     <!-- Filter chips -->
                     <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                        <Button Style="{StaticResource FilterChipActive}" Content="Alle"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="Sport"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="SUV"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="Elektrisch"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="Compact"/>
+                        <Button Style="{StaticResource FilterChipActive}" Content="Alle"
+                                Click="FilterAlle_Click"/>
+                        <Button Style="{StaticResource FilterChip}"       Content="Sport"
+                                Click="FilterSport_Click"/>
+                        <Button Style="{StaticResource FilterChip}"       Content="SUV"
+                                Click="FilterSUV_Click"/>
+                        <Button Style="{StaticResource FilterChip}"       Content="Elektrisch"
+                                Click="FilterElektrisch_Click"/>
+                        <Button Style="{StaticResource FilterChip}"       Content="Compact"
+                                Click="FilterCompact_Click"/>
                     </StackPanel>
 
                     <!-- Car grid (3 columns) -->
-                    <ItemsControl ItemsSource="{Binding Cars}">
+                    <ItemsControl x:Name="ItemsControlCars" ItemsSource="{Binding Cars}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Columns="3"/>
@@ -242,20 +250,22 @@
                                         <!-- CONTENT -->
                                         <StackPanel Margin="20">
 
-                                            <TextBlock Text="{Binding Naam}" FontSize="18" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding CarBrand}" FontSize="18" FontWeight="Bold"/>
                                             <TextBlock Text="{Binding Type}" Foreground="Gray" Margin="0,2,0,10"/>
 
-                                            <TextBlock Text="{Binding Transmissie}"/>
-                                            <TextBlock Text="{Binding Brandstof}"/>
+                                            <TextBlock Text="{Binding Transmission}"/>
+                                            <TextBlock Text="{Binding Fuel}"/>
                                             <TextBlock Text="{Binding Zitplaatsen, StringFormat='{}👥 {0} zitplaatsen'}"/>
 
                                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                                <TextBlock Text="{Binding PrijsPerDag, StringFormat='€{0}'}"
+                                                <TextBlock Text="{Binding PricePerDay, StringFormat='€{0}'}"
                                        FontSize="20" FontWeight="Bold"/>
                                                 <TextBlock Text=" / dag" Margin="5,5,0,0"/>
                                             </StackPanel>
 
-                                            <Button Content="Huur nu" Style="{StaticResource PrimaryButton}" Margin="0,10,0,0"/>
+                                            <Button Content="Huur nu" Style="{StaticResource PrimaryButton}" Margin="0,10,0,0"
+                                                    Click="HuurNu_Click"
+                                                    />
 
                                         </StackPanel>
                                     </StackPanel>
