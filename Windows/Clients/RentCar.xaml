@@ -202,7 +202,7 @@
 
                     <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
                         <TextBlock Text="👤" FontSize="14" Foreground="{StaticResource Accent}" Margin="0,0,8,0"/>
-                        <TextBlock Text="Younes" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock x:Name="txtblProfileName" Text="Younes" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
                     </StackPanel>
                 </Grid>
             </Border>
