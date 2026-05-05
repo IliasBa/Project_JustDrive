@@ -1,5 +1,6 @@
 ﻿using Project_JustDrive;
 using System.Windows;
+using Project_JustDrive.Services;
 
 namespace Project_JustDrive.Windows.Clients
 {
@@ -10,7 +11,12 @@ namespace Project_JustDrive.Windows.Clients
         public Dashboard(int userId)
         {
             InitializeComponent();
+            
+            txtProfileEmaill.Text = Session.CurrentUser.Email;
+            txtProfileName.Text = Session.CurrentCustomer.FirstName +" " + Session.CurrentCustomer.LastName;
+            txtProfileInitials.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
             _userId = userId;
+
         }
 
         public Dashboard()

@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Project_JustDrive.Services;
 
 namespace Project_JustDrive.Windows.Clients
 {
@@ -28,6 +29,10 @@ namespace Project_JustDrive.Windows.Clients
             InitializeComponent();
 
             LoadCarsFromDatabase();
+
+            txtProfileEmaill.Text = Session.CurrentUser.Email;
+            txtProfileName.Text = Session.CurrentCustomer.FirstName + " " + Session.CurrentCustomer.LastName;
+            txtProfileInitials.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
 
             DataContext = this;
             _userId = userId;
@@ -141,6 +146,11 @@ namespace Project_JustDrive.Windows.Clients
             MainWindow login = new MainWindow();
             login.Show();
             this.Close();
+        }
+
+        private void Favorite_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

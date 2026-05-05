@@ -1,6 +1,9 @@
 ﻿using JustDrive.Database;
 using MySql.Data.MySqlClient;
+using Project_JustDrive.Models;
+using Project_JustDrive.Services;
 using System.Windows;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace Project_JustDrive
@@ -28,21 +31,46 @@ namespace Project_JustDrive
                 using (var conn = DatabaseConnection.GetConnection())
                 {
                     conn.Open();
-                    string query = "SELECT User_Id, Role FROM user WHERE Email = @email AND PASSWORD = @password";
+
+                    string query = @"SELECT u.User_Id, u.Email, u.Role, c.First_Name, c.Last_Name, c.Birthday, c.Licence_Number
+                 FROM user u
+                 LEFT JOIN customer c ON c.UserId = u.User_Id
+                 WHERE u.Email = @email AND u.Password = @password";
+
+
                     var cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@email", email);
                     cmd.Parameters.AddWithValue("@password", password);
 
                     var reader = cmd.ExecuteReader();
+
                     if (reader.Read())
                     {
-                        string role = reader["Role"].ToString();
                         int userId = Convert.ToInt32(reader["User_Id"]);
+                        string role = reader["Role"].ToString();
+
+                        if (role == "customer")
+                        {
+                            var customer = new Customer
+                            {
+                                UserId = userId,
+                                Email = reader["Email"].ToString(),
+                                Role = role,
+                                FirstName = reader["First_Name"].ToString(),
+                                LastName = reader["Last_Name"].ToString(),
+                                Birthday = Convert.ToDateTime(reader["Birthday"]),
+                                LicenceNumber = reader["Licence_Number"].ToString()
+                            };
+
+                            Session.CurrentUser = customer;      // Customer IS a User
+                            Session.CurrentCustomer = customer;  // Also store as Customer
+                        }
+
                         reader.Close();
 
                         if (role == "customer")
                         {
-                            Windows.Clients.Dashboard dashboard = new Windows.Clients.Dashboard(userId);
+                            var dashboard = new Windows.Clients.Dashboard(userId);
                             dashboard.Show();
                             this.Close();
                         }

@@ -146,10 +146,10 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">
-                    <Button Style="{StaticResource NavButton}"       Content="🏠   Home"
+                    <Button x:Name="btnHome" Style="{StaticResource NavButton}"       Content="🏠   Home"
                             Click="Dashboard_Click"/>
                     <Button Style="{StaticResource NavButtonActive}" Content="🚗   Huur auto"/>
-                    <Button Style="{StaticResource NavButton}"       Content="♥    Favorieten"/>
+                    <Button Style="{StaticResource NavButton}"       Content="♥    Favorieten" Click="Favorite_Click"/>
                     <Button Style="{StaticResource NavButton}"       Content="📅   Mijn reservaties"/>
                     <Button Style="{StaticResource NavButton}"       Content="👤   Profiel"/>
                 </StackPanel>
@@ -158,12 +158,12 @@
                     <Border Background="{StaticResource SidebarBgAlt}" CornerRadius="10" Padding="12" Margin="0,0,0,8">
                         <StackPanel Orientation="Horizontal">
                             <Border Width="36" Height="36" CornerRadius="18" Background="{StaticResource Accent}">
-                                <TextBlock Text="Y" Foreground="White" FontWeight="Bold"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtProfileInitials" Text="" Foreground="White" FontWeight="Bold"
+               HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="Younes" Foreground="White" FontWeight="SemiBold"/>
-                                <TextBlock Text="younes@gmail.com" Foreground="#8A95A8" FontSize="11"/>
+                                <TextBlock x:Name="txtProfileName" Text="" Foreground="White" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="txtProfileEmaill" Text="" Foreground="#8A95A8" FontSize="11"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -200,10 +200,7 @@
                         </StackPanel>
                     </Border>
 
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="👤" FontSize="14" Foreground="{StaticResource Accent}" Margin="0,0,8,0"/>
-                        <TextBlock x:Name="txtblProfileName" Text="Younes" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
-                    </StackPanel>
+                    
                 </Grid>
             </Border>
 
