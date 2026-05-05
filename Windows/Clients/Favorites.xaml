@@ -1,24 +1,20 @@
-﻿<Window x:Class="Project_JustDrive.Windows.Clients.RentCar"
+﻿<Window x:Class="Project_JustDrive.Windows.Clients.Favorieten"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Just Drive - Huur auto"
+        Title="Just Drive - Favorieten"
         Height="800" Width="1400"
         WindowStartupLocation="CenterScreen"
         Background="#F5F6F8">
 
     <Window.Resources>
-        <!-- Colors -->
         <SolidColorBrush x:Key="SidebarBg" Color="#0F1B2D"/>
         <SolidColorBrush x:Key="SidebarBgAlt" Color="#162338"/>
         <SolidColorBrush x:Key="Accent" Color="#F26B1F"/>
         <SolidColorBrush x:Key="AccentHover" Color="#D85A14"/>
-        <SolidColorBrush x:Key="CardBg" Color="White"/>
         <SolidColorBrush x:Key="TextPrimary" Color="#0F1B2D"/>
         <SolidColorBrush x:Key="TextMuted" Color="#6B7280"/>
         <SolidColorBrush x:Key="BorderLight" Color="#E5E7EB"/>
-        <SolidColorBrush x:Key="ChipBg" Color="White"/>
 
-        <!-- Sidebar nav button -->
         <Style x:Key="NavButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="#C9D2E0"/>
@@ -50,7 +46,6 @@
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
 
-        <!-- Primary (orange) button -->
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource Accent}"/>
             <Setter Property="Foreground" Value="White"/>
@@ -75,47 +70,8 @@
             </Setter>
         </Style>
 
-        <!-- Filter chip (white) -->
-        <Style x:Key="FilterChip" TargetType="Button">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
-            <Setter Property="Padding" Value="22,10"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="0,0,10,0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="bd"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="22">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
-                                              Margin="{TemplateBinding Padding}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="bd" Property="Background" Value="#F0F1F4"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Filter chip (active = orange) -->
-        <Style x:Key="FilterChipActive" TargetType="Button" BasedOn="{StaticResource FilterChip}">
-            <Setter Property="Background" Value="{StaticResource Accent}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="{StaticResource Accent}"/>
-        </Style>
-
-        <!-- Card -->
         <Style x:Key="Card" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource CardBg}"/>
+            <Setter Property="Background" Value="White"/>
             <Setter Property="CornerRadius" Value="12"/>
             <Setter Property="Effect">
                 <Setter.Value>
@@ -131,7 +87,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- ============ SIDEBAR ============ -->
+        <!-- SIDEBAR -->
         <Border Grid.Column="0" Background="{StaticResource SidebarBg}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -146,13 +102,11 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">
-                    <Button Style="{StaticResource NavButton}"       Content="🏠   Home"
-                            Click="Dashboard_Click"/>
-                    <Button Style="{StaticResource NavButtonActive}" Content="🚗   Huur auto"/>
-                    <Button Style="{StaticResource NavButton}"       Content="♥    Favorieten"
-                            Click="Favorite_Click"/>
-                    <Button Style="{StaticResource NavButton}"       Content="📅   Mijn reservaties"/>
-                    <Button Style="{StaticResource NavButton}"       Content="👤   Profiel"/>
+                    <Button Style="{StaticResource NavButton}" Content="🏠   Home" Click="Dashboard_Click"/>
+                    <Button Style="{StaticResource NavButton}" Content="🚗   Huur auto" Click="HuurAuto_Click"/>
+                    <Button Style="{StaticResource NavButtonActive}" Content="♥    Favorieten"/>
+                    <Button Style="{StaticResource NavButton}" Content="📅   Mijn reservaties"/>
+                    <Button Style="{StaticResource NavButton}" Content="👤   Profiel"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Margin="12,0,12,16">
@@ -169,71 +123,33 @@
                         </StackPanel>
                     </Border>
                     <Button Style="{StaticResource NavButton}" Content="⎋   Uitloggen"
-                            Background="#0A1422" Margin="0"
-                            Click="Uitloggen_Click"/>
+                            Background="#0A1422" Margin="0" Click="Uitloggen_Click"/>
                 </StackPanel>
             </Grid>
         </Border>
 
-        <!-- ============ MAIN CONTENT ============ -->
+        <!-- MAIN CONTENT -->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Top bar -->
             <Border Grid.Row="0" Background="White" Padding="32,18"
                     BorderBrush="{StaticResource BorderLight}" BorderThickness="0,0,0,1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0" Background="#F5F6F8" CornerRadius="8" Padding="14,10">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="🔍" Foreground="{StaticResource TextMuted}" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                            <TextBox x:Name="TxtZoek" Background="Transparent" BorderThickness="0"
-                                     Foreground="{StaticResource TextPrimary}" VerticalAlignment="Center"
-                                     Width="400" FontSize="14"
-                                     TextChanged="TxtZoek_TextChanged"/>
-                        </StackPanel>
-                    </Border>
-
-                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="20,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="👤" FontSize="14" Foreground="{StaticResource Accent}" Margin="0,0,8,0"/>
-                        <TextBlock Text="Younes" FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
-                    </StackPanel>
-                </Grid>
+                <TextBlock Text="Mijn favorieten" FontSize="22" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimary}"/>
             </Border>
 
-            <!-- Scrollable content -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="32,28">
 
-                    <!-- Header -->
-                    <TextBlock Text="Huur een auto" FontSize="28" FontWeight="Bold"
+                    <TextBlock Text="Jouw favoriete auto's" FontSize="28" FontWeight="Bold"
                                Foreground="{StaticResource TextPrimary}"/>
-                    <TextBlock Text="Kies uit ons uitgebreide aanbod"
-                               Foreground="{StaticResource Accent}" Margin="0,4,0,20"/>
+                    <TextBlock Text="Auto's die je hebt opgeslagen"
+                               Foreground="{StaticResource Accent}" Margin="0,4,0,24"/>
 
-                    <!-- Filter chips -->
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
-                        <Button Style="{StaticResource FilterChipActive}" Content="Alle"
-                                Click="FilterAlle_Click"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="Sport"
-                                Click="FilterSport_Click"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="SUV"
-                                Click="FilterSUV_Click"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="Elektrisch"
-                                Click="FilterElektrisch_Click"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="Compact"
-                                Click="FilterCompact_Click"/>
-                    </StackPanel>
-
-                    <!-- Car grid (3 columns) -->
-                    <ItemsControl x:Name="ItemsControlCars" ItemsSource="{Binding Cars}">
+                    <ItemsControl x:Name="FavorietenList">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <UniformGrid Columns="3"/>
@@ -244,49 +160,35 @@
                             <DataTemplate>
                                 <Border Style="{StaticResource Card}" Margin="0,0,20,20">
                                     <StackPanel>
-
-                                        <!-- IMAGE / TOP -->
-                                        <Border Height="180" Background="#1F2937" CornerRadius="12,12,0,0">
-                                            <Image Stretch="UniformToFill">
-                                                <Image.Style>
-                                                    <Style TargetType="Image">
-                                                        <Setter Property="Source" Value="{Binding ImagePath}"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding ImagePath}" Value="">
-                                                                <Setter Property="Source" Value="{x:Null}"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Image.Style>
-                                            </Image>
-                                        </Border>
-
-                                        <!-- CONTENT -->
+                                        <Border Height="180" Background="#1F2937" CornerRadius="12,12,0,0"/>
                                         <StackPanel Margin="20">
-
                                             <TextBlock Text="{Binding CarBrand}" FontSize="18" FontWeight="Bold"/>
                                             <TextBlock Text="{Binding Type}" Foreground="Gray" Margin="0,2,0,10"/>
-
                                             <TextBlock Text="{Binding Transmission}"/>
                                             <TextBlock Text="{Binding Fuel}"/>
-                                            <TextBlock Text="{Binding Zitplaatsen, StringFormat='{}👥 {0} zitplaatsen'}"/>
-
                                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                                 <TextBlock Text="{Binding PricePerDay, StringFormat='€{0}'}"
-                                       FontSize="20" FontWeight="Bold"/>
+                                                           FontSize="20" FontWeight="Bold"/>
                                                 <TextBlock Text=" / dag" Margin="5,5,0,0"/>
                                             </StackPanel>
-
-                                            <Button Content="Huur nu" Style="{StaticResource PrimaryButton}" Margin="0,10,0,0"
-                                                    Click="HuurNu_Click"
-                                                    />
-
+                                            <Button Content="Bekijk details" Style="{StaticResource PrimaryButton}"
+                                                    Margin="0,10,0,0" Click="BtnBekijk_Click"/>
+                                            <Button Content="💔  Verwijderen" 
+                                                    Margin="0,8,0,0" Click="BtnVerwijder_Click"
+                                                    Background="Transparent" Foreground="Red"
+                                                    BorderThickness="1" BorderBrush="Red"
+                                                    Padding="10,8" Cursor="Hand"/>
                                         </StackPanel>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
+
+                    <TextBlock x:Name="TxtLeeg" Text="Je hebt nog geen favorieten."
+                               FontSize="16" Foreground="{StaticResource TextMuted}"
+                               HorizontalAlignment="Center" Margin="0,40,0,0"
+                               Visibility="Collapsed"/>
                 </StackPanel>
             </ScrollViewer>
         </Grid>

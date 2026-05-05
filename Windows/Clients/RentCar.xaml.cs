@@ -55,7 +55,10 @@ namespace Project_JustDrive.Windows.Clients
                         Type = reader["TYPE"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         Fuel = reader["Fuel"].ToString(),
-                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"])
+                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
+                        ImagePath = reader["Image_Path"] == DBNull.Value || string.IsNullOrEmpty(reader["Image_Path"].ToString())
+                        ? null
+                        : reader["Image_Path"].ToString()
                     });
                 }
             }
@@ -140,6 +143,13 @@ namespace Project_JustDrive.Windows.Clients
         {
             MainWindow login = new MainWindow();
             login.Show();
+            this.Close();
+        }
+
+        private void Favorite_Click(object sender, RoutedEventArgs e)
+        {
+            Favorieten favorite = new Favorieten(_userId);
+            favorite.Show();
             this.Close();
         }
     }
