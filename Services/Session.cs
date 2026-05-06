@@ -9,6 +9,7 @@ namespace Project_JustDrive.Services
     {
         public static User CurrentUser { get; set; }
          public static Customer CurrentCustomer { get; set; }
+
         
     }
 }
