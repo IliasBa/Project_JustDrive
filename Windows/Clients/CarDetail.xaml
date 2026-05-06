@@ -173,6 +173,10 @@
 
                         <Button Content="Reserveer nu" Style="{StaticResource PrimaryButton}"
                                 Click="BtnReserveer_Click"/>
+                        <Button x:Name="BtnFavoriet" Content="♥  Toevoegen aan favorieten" 
+                                Style="{StaticResource SecondaryButton}"
+                                Margin="0,10,0,0"
+                                Click="Favoriet_Click"/> 
                     </StackPanel>
                 </Border>
             </Grid>
