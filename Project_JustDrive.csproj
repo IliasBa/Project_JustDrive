@@ -9,8 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\Volkswagen-Polo.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MySql.Data" Version="9.7.0" />
     <PackageReference Include="NuGet.PackageManagement" Version="7.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\Volkswagen-Polo.jpg" />
   </ItemGroup>
 
 </Project>

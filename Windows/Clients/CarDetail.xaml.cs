@@ -17,6 +17,10 @@ namespace Project_JustDrive.Windows.Clients
             _carId = carId;
             _userId = userId;
             LoadCarDetails();
+            CheckIsFavoriet();
+
+            DpStart.SelectedDateChanged += DateChanged;
+            DpEnd.SelectedDateChanged += DateChanged;
 
             DpStart.SelectedDateChanged += DateChanged;
             DpEnd.SelectedDateChanged += DateChanged;
@@ -114,6 +118,65 @@ namespace Project_JustDrive.Windows.Clients
             RentCar rentCar = new RentCar(_userId);
             rentCar.Show();
             this.Close();
+        }
+
+        private void Favoriet_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                using (var conn = DatabaseConnection.GetConnection())
+                {
+                    conn.Open();
+                    string checkQuery = "SELECT COUNT(*) FROM favorite WHERE UserId = @userId AND CarId = @carId";
+                    var checkCmd = new MySqlCommand(checkQuery, conn);
+                    checkCmd.Parameters.AddWithValue("@userId", _userId);
+                    checkCmd.Parameters.AddWithValue("@carId", _carId);
+                    int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+                    if (count > 0)
+                    {
+                        string deleteQuery = "DELETE FROM favorite WHERE UserId = @userId AND CarId = @carId";
+                        var deleteCmd = new MySqlCommand(deleteQuery, conn);
+                        deleteCmd.Parameters.AddWithValue("@userId", _userId);
+                        deleteCmd.Parameters.AddWithValue("@carId", _carId);
+                        deleteCmd.ExecuteNonQuery();
+
+                        BtnFavoriet.Content = "♥  Toevoegen aan favorieten";
+                        MessageBox.Show("Verwijderd uit favorieten.");
+                    }
+                    else
+                    {
+                        string insertQuery = "INSERT INTO favorite (UserId, CarId) VALUES (@userId, @carId)";
+                        var insertCmd = new MySqlCommand(insertQuery, conn);
+                        insertCmd.Parameters.AddWithValue("@userId", _userId);
+                        insertCmd.Parameters.AddWithValue("@carId", _carId);
+                        insertCmd.ExecuteNonQuery();
+
+                        BtnFavoriet.Content = "💔  Verwijderen uit favorieten";
+                        MessageBox.Show("Toegevoegd aan favorieten!");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Fout: " + ex.Message);
+            }
+        }
+
+        private void CheckIsFavoriet()
+        {
+            using (var conn = DatabaseConnection.GetConnection())
+            {
+                conn.Open();
+                string query = "SELECT COUNT(*) FROM favorite WHERE UserId = @userId AND CarId = @carId";
+                var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@userId", _userId);
+                cmd.Parameters.AddWithValue("@carId", _carId);
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+
+                if (count > 0)
+                    BtnFavoriet.Content = "💔  Verwijderen uit favorieten";
+            }
         }
     }
 }
