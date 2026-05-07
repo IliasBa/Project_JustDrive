@@ -12,5 +12,8 @@ namespace Project_JustDrive.Models
         public decimal TotalPrice { get; set; }
         public int CustomerId { get; set; }
         public int CarId { get; set; }
+        public string CarBrand { get; set; }
+        public string CarModel { get; set; }
+        public decimal PricePerDay { get; set; }
     }
 }
