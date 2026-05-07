@@ -17,5 +17,7 @@ namespace Project_JustDrive.Models
         public string Transmission { get; set; }
         public string Type { get; set; }
         public string LicensePlate { get; set; }
+        public string? ImagePath { get; set; }
+
     }
 }
