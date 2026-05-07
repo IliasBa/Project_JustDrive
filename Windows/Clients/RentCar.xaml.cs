@@ -57,6 +57,7 @@ namespace Project_JustDrive.Windows.Clients
                     {
                         Id = Convert.ToInt32(reader["Id"]),
                         CarBrand = reader["Car_Brand"].ToString(),
+                        Model = reader["Model"].ToString(),
                         Type = reader["TYPE"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         Fuel = reader["Fuel"].ToString(),
@@ -119,9 +120,9 @@ namespace Project_JustDrive.Windows.Clients
             ApplyFilters(TxtZoek.Text);
         }
 
-        private void FilterCompact_Click(object sender, RoutedEventArgs e)
+        private void FilterMinivan_Click(object sender, RoutedEventArgs e)
         {
-            ActiveFilter = "Hatchback";
+            ActiveFilter = "Minivan";
             ApplyFilters(TxtZoek.Text);
         }
 

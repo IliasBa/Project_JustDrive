@@ -43,10 +43,13 @@ namespace Project_JustDrive.Windows.Clients
             MessageBox.Show("Reservaties komt binnenkort!");
         }
 
-        private void Favorieten_Click(object sender, RoutedEventArgs e)
+        private void Favorite_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Favorieten komt binnenkort!");
+            Favorieten favorite = new Favorieten(_userId);
+            favorite.Show();
+            this.Close();
         }
+        
 
         private void Profiel_Click(object sender, RoutedEventArgs e)
         {
@@ -84,11 +87,13 @@ namespace Project_JustDrive.Windows.Clients
             {
                 var carDetail = new Windows.Clients.CarDetail(reservation.CarId, Session.CurrentUser.UserId);
                 carDetail.Show();
+                this.Close();         
             }
             else
             {
                 MessageBox.Show("Reservation is null!");
             }
+            
         }
         
 
@@ -118,7 +123,10 @@ namespace Project_JustDrive.Windows.Clients
             {
                 var carDetail = new Windows.Clients.CarDetail(_activeCarId, Session.CurrentUser.UserId);
                 carDetail.Show();
+                this.Close();            
             }
         }
+
+        
     }
 }

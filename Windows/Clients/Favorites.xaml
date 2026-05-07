@@ -105,7 +105,6 @@
                     <Button Style="{StaticResource NavButton}" Content="🏠   Home" Click="Dashboard_Click"/>
                     <Button Style="{StaticResource NavButton}" Content="🚗   Huur auto" Click="HuurAuto_Click"/>
                     <Button Style="{StaticResource NavButtonActive}" Content="♥    Favorieten"/>
-                    <Button Style="{StaticResource NavButton}" Content="📅   Mijn reservaties"/>
                     <Button Style="{StaticResource NavButton}" Content="👤   Profiel"/>
                 </StackPanel>
 

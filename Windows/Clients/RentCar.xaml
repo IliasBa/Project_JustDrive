@@ -150,7 +150,6 @@
                             Click="Dashboard_Click"/>
                     <Button Style="{StaticResource NavButtonActive}" Content="🚗   Huur auto"/>
                     <Button Style="{StaticResource NavButton}"       Content="♥    Favorieten" Click="Favorite_Click"/>
-                    <Button Style="{StaticResource NavButton}"       Content="📅   Mijn reservaties"/>
                     <Button Style="{StaticResource NavButton}"       Content="👤   Profiel"/>
                 </StackPanel>
 
@@ -224,8 +223,8 @@
                                 Click="FilterSUV_Click"/>
                         <Button Style="{StaticResource FilterChip}"       Content="Elektrisch"
                                 Click="FilterElektrisch_Click"/>
-                        <Button Style="{StaticResource FilterChip}"       Content="Compact"
-                                Click="FilterCompact_Click"/>
+                        <Button Style="{StaticResource FilterChip}"       Content="Minivan"
+                                Click="FilterMinivan_Click"/>
                     </StackPanel>
 
                     <!-- Car grid (3 columns) -->
@@ -261,6 +260,7 @@
                                         <StackPanel Margin="20">
 
                                             <TextBlock Text="{Binding CarBrand}" FontSize="18" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Model}" FontSize="18" FontWeight="Bold"/>
                                             <TextBlock Text="{Binding Type}" Foreground="Gray" Margin="0,2,0,10"/>
 
                                             <TextBlock Text="{Binding Transmission}"/>
