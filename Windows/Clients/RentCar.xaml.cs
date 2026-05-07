@@ -61,9 +61,9 @@ namespace Project_JustDrive.Windows.Clients
                         Transmission = reader["Transmission"].ToString(),
                         Fuel = reader["Fuel"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
-                        ImagePath = reader["Image_Path"] == DBNull.Value || string.IsNullOrEmpty(reader["Image_Path"].ToString())
-                        ? null
-                        : reader["Image_Path"].ToString()
+                        //ImagePath = reader["Image_Path"] == DBNull.Value || string.IsNullOrEmpty(reader["Image_Path"].ToString())
+                        //? null
+                        //: reader["Image_Path"].ToString()
                     });
                 }
             }
