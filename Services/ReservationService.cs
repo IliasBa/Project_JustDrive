@@ -101,6 +101,7 @@ namespace Project_JustDrive.Services
                         CarModel = reader["Model"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_per_day"]),
                         CarId = Convert.ToInt32(reader["CarId"])
+
                     };
                 }
 

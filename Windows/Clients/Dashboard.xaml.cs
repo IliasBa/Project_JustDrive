@@ -11,6 +11,7 @@ namespace Project_JustDrive.Windows.Clients
         private int _userId;
         private int CarId;
         private int _activeCarId;
+        private int activeReservationId;
 
         public Dashboard(int userId)
         {
@@ -127,6 +128,20 @@ namespace Project_JustDrive.Windows.Clients
             }
         }
 
-        
+        private void SchadeMelden_Click(object sender, RoutedEventArgs e) 
+        {
+            if (activeReservationId > 0)
+            {
+                ReportDamage reportDamage = new ReportDamage(activeReservationId);
+                reportDamage.Show();
+            }
+            else
+            {
+                MessageBox.Show("Geen actieve reservatie gevonden.");
+            }
+        }
+
+
+
     }
 }
