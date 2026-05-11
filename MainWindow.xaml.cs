@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using Project_JustDrive.Models;
 using Project_JustDrive.Services;
 using System.Windows;
+using Project_JustDrive.Windows.Company;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
@@ -76,7 +77,9 @@ namespace Project_JustDrive
                         }
                         else if (role == "company")
                         {
-                            MessageBox.Show("Bedrijf dashboard komt binnenkort!");
+                                CompanyDashboard companyDashboard = new CompanyDashboard(userId);
+                                companyDashboard.Show();
+                                this.Close();
                         }
                         else if (role == "admin")
                         {
