@@ -16,7 +16,7 @@
             <TextBlock Text="Email" Foreground="White" Margin="0,0,0,5"/>
             <TextBox x:Name="TxtEmail" Height="40" Padding="10"
                      Background="#334155" Foreground="White"
-                     BorderThickness="0" FontSize="14"/>
+                     BorderThickness="0" FontSize="14" />
 
             <TextBlock Text="Wachtwoord" Foreground="White" Margin="0,15,0,5"/>
             <PasswordBox x:Name="TxtPassword" Height="40" Padding="10"

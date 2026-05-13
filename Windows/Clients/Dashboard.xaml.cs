@@ -3,20 +3,27 @@ using Project_JustDrive.Services;
 using System.Windows;
 using System.Windows.Controls;
 using static Project_JustDrive.Services.ReservationService;
+using Project_JustDrive.Models;
+
 
 namespace Project_JustDrive.Windows.Clients
 {
     public partial class Dashboard : Window
     {
         private int _userId;
-        private int CarId;
+        //private int CarId;
         private int _activeCarId;
+<<<<<<< Updated upstream
+=======
+        private int _activeReservationId;
+>>>>>>> Stashed changes
 
         public Dashboard(int userId)
         {
             InitializeComponent();
-            LoadPreviousReservations(); 
             LoadActiveReservation();
+            LoadFutureReservations();
+            LoadPreviousReservations();
             _userId = userId;
 
             // labels inladen
@@ -38,22 +45,16 @@ namespace Project_JustDrive.Windows.Clients
             this.Close();
         }
 
-        private void Reservaties_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Reservaties komt binnenkort!");
-        }
-
         private void Favorite_Click(object sender, RoutedEventArgs e)
         {
             Favorieten favorite = new Favorieten(_userId);
             favorite.Show();
             this.Close();
         }
-        
-
         private void Profiel_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Profiel komt binnenkort!");
+            Profile profile = new Profile();
+            profile.Show();
         }
 
         private void Uitloggen_Click(object sender, RoutedEventArgs e)
@@ -76,9 +77,7 @@ namespace Project_JustDrive.Windows.Clients
                 EndDate = r.EndDate
             }).ToList();
         }
-
-
-        private void btnRentAgain_Click(object sender, RoutedEventArgs e)
+        private void RentAgain_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var reservation = button.DataContext as ReservationViewModel;
@@ -95,8 +94,6 @@ namespace Project_JustDrive.Windows.Clients
             }
             
         }
-        
-
         private void LoadActiveReservation()
         {
             ReservationService service = new ReservationService();
@@ -105,18 +102,49 @@ namespace Project_JustDrive.Windows.Clients
             if (active != null)
             {
                 _activeCarId = active.CarId;
+                _activeReservationId = active.Id;
                 txtActiveCarName.Text = $"{active.CarBrand} {active.CarModel}";
                 txtActiveDateRange.Text = $"{active.StartDate:dd/MM/yyyy} → {active.EndDate:dd/MM/yyyy}";
                 txtActivePrice.Text = $"€ {active.PricePerDay}";
+                gridActiveReservation.Visibility = Visibility.Visible;
+                
             }
             else
             {
-                txtActiveCarName.Text = "Geen actieve reservatie";
+                // Clear the labels
+                txtActiveCarName.Text = "";
                 txtActiveDateRange.Text = "";
                 txtActivePrice.Text = "";
+                _activeCarId = 0;
+                _activeReservationId = 0;
+                gridActiveReservation.Visibility = Visibility.Collapsed;
             }
         }
+        private void LoadFutureReservations()
+        {
+            ReservationService service = new ReservationService();
+            var future = service.GetFutureReservationsByCustomer(Session.CurrentCustomer.UserId);
 
+            if (future.Count > 0)
+            {
+                FutureReservationsList.ItemsSource = future.Select(r => new ReservationViewModel
+                {
+                    CarId = r.CarId,
+                    ReservationId = r.Id,
+                    CarName = $"{r.CarBrand} {r.CarModel}",
+                    Price = $"€ {r.PricePerDay}",
+                    StartDate = r.StartDate,
+                    EndDate = r.EndDate
+                }).ToList();
+                
+            }
+            else
+            {
+                FutureReservationsList.Visibility = Visibility.Collapsed;
+                FutureReservationsList.ItemsSource = null;
+                stackNoFuture.Visibility = Visibility.Visible;
+            }
+        }
         private void BekijkDetails_Click(object sender, RoutedEventArgs e)
         {
             if (_activeCarId > 0)
@@ -126,7 +154,44 @@ namespace Project_JustDrive.Windows.Clients
                 this.Close();            
             }
         }
+<<<<<<< Updated upstream
 
         
+=======
+        private void SchadeMelden_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show($"ActiveReservationId: {_activeReservationId}");
+
+            if (_activeReservationId > 0)
+            {
+                ReportDamage reportDamage = new ReportDamage(_activeReservationId);
+                reportDamage.Show();
+            }
+            else
+            {
+                MessageBox.Show("Geen actieve reservatie gevonden.");
+            }
+        }
+        private void AnnuleerReservatie_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var reservation = button.DataContext as ReservationViewModel;
+
+            if (reservation != null)
+            {
+                var result = MessageBox.Show("Ben je zeker dat je deze reservatie wil annuleren?",
+                                             "Annuleren", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ReservationService service = new ReservationService();
+                    service.CancelReservation(reservation.ReservationId);
+
+
+                    FutureReservationsList.ItemsSource = null;
+                    
+                }
+            }
+        }
+>>>>>>> Stashed changes
     }
 }

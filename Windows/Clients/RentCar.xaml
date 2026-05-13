@@ -150,7 +150,7 @@
                             Click="Dashboard_Click"/>
                     <Button Style="{StaticResource NavButtonActive}" Content="🚗   Huur auto"/>
                     <Button Style="{StaticResource NavButton}"       Content="♥    Favorieten" Click="Favorite_Click"/>
-                    <Button Style="{StaticResource NavButton}"       Content="👤   Profiel"/>
+                    <Button Style="{StaticResource NavButton}"       Content="👤   Profiel" Click="Profiel_Click"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Margin="12,0,12,16">
