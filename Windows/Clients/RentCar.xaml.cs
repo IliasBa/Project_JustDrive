@@ -68,7 +68,6 @@ namespace Project_JustDrive.Windows.Clients
                     });
                 }
             }
-
             Cars = new List<Car>(AllCars);
         }
 
@@ -157,6 +156,12 @@ namespace Project_JustDrive.Windows.Clients
             Favorieten favorite = new Favorieten(_userId);
             favorite.Show();
             this.Close();
+        }
+
+        private void Profiel_Click(object sender, RoutedEventArgs e)
+        {
+            Profile profile = new Profile();
+            profile.Show();
         }
     }
 }
