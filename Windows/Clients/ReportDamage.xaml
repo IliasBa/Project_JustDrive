@@ -88,12 +88,8 @@
                 <Button Content="Schade melden"
                     Style="{StaticResource PrimaryButton}"
                     Margin="0,20,0,0"
-<<<<<<< HEAD
-                    Click="SchadeMelden_Click"/>
-=======
-                    Click="Melden_Click"/>
->>>>>>> Redou
 
+                    Click="Melden_Click"/>
             </StackPanel>
 
         </Border>

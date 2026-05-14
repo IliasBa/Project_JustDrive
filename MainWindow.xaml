@@ -64,12 +64,7 @@
             </Setter>
         </Style>
 
-<<<<<<< HEAD
-            <TextBlock Text="Email" Foreground="White" Margin="0,0,0,5"/>
-            <TextBox x:Name="TxtEmail" Height="40" Padding="10"
-                     Background="#334155" Foreground="White"
-                     BorderThickness="0" FontSize="14" />
-=======
+
         <Style x:Key="PrimaryButton" TargetType="Button">
             <Setter Property="Background" Value="{StaticResource Accent}"/>
             <Setter Property="Foreground" Value="White"/>
@@ -93,7 +88,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
->>>>>>> ilias4
 
         <Style x:Key="SecondaryButton" TargetType="Button">
             <Setter Property="Background" Value="White"/>

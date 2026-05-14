@@ -12,8 +12,6 @@ namespace Project_JustDrive.Services
         public static User CurrentUser { get; set; }
         public static Customer CurrentCustomer { get; set; }
 
-<<<<<<< HEAD
-
         //public Reservation GetActiveReservation(int customerId)
         //{
         //    Reservation reservation = null;
@@ -48,12 +46,6 @@ namespace Project_JustDrive.Services
 
         //    return reservation;
         //}
-
-=======
-<<<<<<< Updated upstream
-        
-=======
->>>>>>> Redou
         public Reservation GetActiveReservation(int customerId)
         {
             Reservation reservation = null;
@@ -93,14 +85,8 @@ namespace Project_JustDrive.Services
                     }
                 }
             }
-<<<<<<< HEAD
 
             return reservation;
         }
-=======
-            return reservation;
-        }
->>>>>>> Stashed changes
->>>>>>> Redou
     }
 }

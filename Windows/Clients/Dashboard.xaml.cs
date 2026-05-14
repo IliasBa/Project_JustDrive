@@ -13,15 +13,8 @@ namespace Project_JustDrive.Windows.Clients
         private int _userId;
         //private int CarId;
         private int _activeCarId;
-<<<<<<< HEAD
         private int activeReservationId;
-=======
-<<<<<<< Updated upstream
-=======
         private int _activeReservationId;
->>>>>>> Stashed changes
->>>>>>> Redou
-
         public Dashboard(int userId)
         {
             InitializeComponent();
@@ -90,13 +83,13 @@ namespace Project_JustDrive.Windows.Clients
             {
                 var carDetail = new Windows.Clients.CarDetail(reservation.CarId, Session.CurrentUser.UserId);
                 carDetail.Show();
-                this.Close();         
+                this.Close();
             }
             else
             {
                 MessageBox.Show("Reservation is null!");
             }
-            
+
         }
         private void LoadActiveReservation()
         {
@@ -111,7 +104,7 @@ namespace Project_JustDrive.Windows.Clients
                 txtActiveDateRange.Text = $"{active.StartDate:dd/MM/yyyy} → {active.EndDate:dd/MM/yyyy}";
                 txtActivePrice.Text = $"€ {active.PricePerDay}";
                 gridActiveReservation.Visibility = Visibility.Visible;
-                
+
             }
             else
             {
@@ -140,7 +133,7 @@ namespace Project_JustDrive.Windows.Clients
                     StartDate = r.StartDate,
                     EndDate = r.EndDate
                 }).ToList();
-                
+
             }
             else
             {
@@ -155,20 +148,10 @@ namespace Project_JustDrive.Windows.Clients
             {
                 var carDetail = new Windows.Clients.CarDetail(_activeCarId, Session.CurrentUser.UserId);
                 carDetail.Show();
-                this.Close();            
+                this.Close();
             }
         }
-<<<<<<< Updated upstream
 
-<<<<<<< HEAD
-        private void SchadeMelden_Click(object sender, RoutedEventArgs e) 
-        {
-            if (activeReservationId > 0)
-            {
-                ReportDamage reportDamage = new ReportDamage(activeReservationId);
-=======
-        
-=======
         private void SchadeMelden_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show($"ActiveReservationId: {_activeReservationId}");
@@ -176,7 +159,6 @@ namespace Project_JustDrive.Windows.Clients
             if (_activeReservationId > 0)
             {
                 ReportDamage reportDamage = new ReportDamage(_activeReservationId);
->>>>>>> Redou
                 reportDamage.Show();
             }
             else
@@ -184,11 +166,7 @@ namespace Project_JustDrive.Windows.Clients
                 MessageBox.Show("Geen actieve reservatie gevonden.");
             }
         }
-<<<<<<< HEAD
 
-
-
-=======
         private void AnnuleerReservatie_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
@@ -205,11 +183,9 @@ namespace Project_JustDrive.Windows.Clients
 
 
                     FutureReservationsList.ItemsSource = null;
-                    
+
                 }
             }
         }
->>>>>>> Stashed changes
->>>>>>> Redou
     }
 }

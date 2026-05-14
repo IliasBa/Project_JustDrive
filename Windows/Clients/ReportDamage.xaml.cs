@@ -28,11 +28,8 @@ namespace Project_JustDrive.Windows.Clients
             _reservationId = reservationId;
         }
 
-<<<<<<< HEAD
-        private void SchadeMelden_Click(object sender, RoutedEventArgs e)
-=======
         private void Melden_Click(object sender, RoutedEventArgs e)
->>>>>>> Redou
+
         {
             if (string.IsNullOrEmpty(txtDescription.Text))
             {
@@ -61,6 +58,5 @@ namespace Project_JustDrive.Windows.Clients
         {
             this.Close();
         }
-
     }
 }
