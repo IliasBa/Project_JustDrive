@@ -1,40 +1,187 @@
 ﻿<Window x:Class="Project_JustDrive.MainWindow"
+        WindowState="Maximized"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="JustDrive" Height="450" Width="800"
+        Title="Just Drive" Height="700" Width="900"
         WindowStartupLocation="CenterScreen">
 
-    <Grid Background="#1e293b">
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="350">
+    <Window.Resources>
+        <SolidColorBrush x:Key="Accent" Color="#F26B1F"/>
+        <SolidColorBrush x:Key="AccentHover" Color="#D85A14"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#0F1B2D"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#6B7280"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E5E7EB"/>
 
-            <TextBlock Text="JustDrive" FontSize="36" FontWeight="Bold"
-                       Foreground="White" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+        <Style x:Key="InputField" TargetType="TextBox">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#0F1B2D"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                  Margin="{TemplateBinding Padding}"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <TextBlock Text="Welkom terug" FontSize="14"
-                       Foreground="#94a3b8" HorizontalAlignment="Center" Margin="0,0,0,30"/>
+        <Style x:Key="InputPassword" TargetType="PasswordBox">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="#0F1B2D"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="PasswordBox">
+                        <Border Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" 
+                                  Margin="{TemplateBinding Padding}"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
+<<<<<<< HEAD
             <TextBlock Text="Email" Foreground="White" Margin="0,0,0,5"/>
             <TextBox x:Name="TxtEmail" Height="40" Padding="10"
                      Background="#334155" Foreground="White"
                      BorderThickness="0" FontSize="14" />
+=======
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentHover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+>>>>>>> ilias4
 
-            <TextBlock Text="Wachtwoord" Foreground="White" Margin="0,15,0,5"/>
-            <PasswordBox x:Name="TxtPassword" Height="40" Padding="10"
-                         Background="#334155" Foreground="White"
-                         BorderThickness="0" FontSize="14"/>
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F9FAFB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
 
-            <Button x:Name="Login" Content="Inloggen"
-                    Height="45" Margin="0,25,0,0"
-                    Background="#4f46e5" Foreground="White"
-                    FontSize="16" FontWeight="Bold"
-                    BorderThickness="0" Cursor="Hand"
-                    Click="Login_Click"/>
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FFF5F0" Offset="0"/>
+                <GradientStop Color="#FFFFFF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
 
-            <TextBlock Text="Nog geen account? Registreer hier"
-                       Foreground="#4f46e5" HorizontalAlignment="Center"
-                       Margin="0,15,0,0" Cursor="Hand"
-                       MouseLeftButtonUp="TxtRegister_Click"/>
+        <Border Background="White" CornerRadius="20" Padding="50,40"
+                Width="420" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="40" ShadowDepth="4"/>
+            </Border.Effect>
 
-        </StackPanel>
+            <StackPanel>
+                <!-- Logo -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,4">
+                    <TextBlock Text="Just Drive" FontSize="26" FontWeight="Bold"
+                               Foreground="{StaticResource TextPrimary}"/>
+                    <TextBlock Text="." FontSize="26" FontWeight="Bold"
+                               Foreground="{StaticResource Accent}"/>
+                </StackPanel>
+                <TextBlock Text="Log in om verder te gaan" FontSize="14"
+                           Foreground="{StaticResource TextMuted}"
+                           HorizontalAlignment="Center" Margin="0,0,0,24"/>
+
+                <!-- Email -->
+                <TextBlock Text="E-mailadres" Foreground="#6B7280" FontSize="13" Margin="0,0,0,4"/>
+                <TextBox x:Name="TxtEmail" Style="{StaticResource InputField}" FontSize="14" Foreground="Black" />
+
+                <!-- Wachtwoord -->
+                <TextBlock Text="Wachtwoord" Foreground="#6B7280" FontSize="13" Margin="0,0,0,4"/>
+                <PasswordBox x:Name="TxtPassword" Style="{StaticResource InputPassword}" FontSize="20" Foreground="Black"/>
+
+                <!-- Wachtwoord vergeten -->
+                <TextBlock Text="Wachtwoord vergeten?" FontSize="13"
+                           Foreground="{StaticResource TextMuted}"
+                           HorizontalAlignment="Center" Margin="0,0,0,16"
+                           Cursor="Hand"/>
+
+                <!-- Inloggen -->
+                <Button Content="Inloggen" Style="{StaticResource PrimaryButton}"
+                        Margin="0,0,0,10" Click="Login_Click"/>
+
+                <!-- Registreer -->
+                <Button Content="Nog geen account? Registreer" Style="{StaticResource SecondaryButton}"
+                        Margin="0,0,0,16" Click="Registreren_Click"/>
+
+                <!-- Disclaimer -->
+                <TextBlock FontSize="11" Foreground="{StaticResource TextMuted}"
+                           HorizontalAlignment="Center" TextAlignment="Center" Margin="0,0,0,12">
+                    <Run Text="Door verder te gaan ga je akkoord met onze "/>
+                    <Run Text="Algemene Voorwaarden" Foreground="{StaticResource Accent}"/>
+                    <Run Text=" en "/>
+                    <Run Text="Privacybeleid" Foreground="{StaticResource Accent}"/>
+                </TextBlock>
+
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

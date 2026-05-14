@@ -1,12 +1,186 @@
 ﻿<Window x:Class="Project_JustDrive.Windows.Registreren"
+        WindowState="Maximized"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Project_JustDrive.Windows"
-        mc:Ignorable="d"
-        Title="Registreren" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Just Drive - Registreren"
+        Height="700" Width="550"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F6F8">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="Accent" Color="#F26B1F"/>
+        <SolidColorBrush x:Key="AccentHover" Color="#D85A14"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#0F1B2D"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#6B7280"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E5E7EB"/>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentHover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="SecondaryButton" TargetType="Button">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="Padding" Value="20,12"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="#F9FAFB"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="InputLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+        </Style>
+
+        <Style x:Key="InputField" TargetType="TextBox">
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,0,0,16"/>
+        </Style>
+
+        <Style x:Key="ToggleBtn" TargetType="Button">
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="{StaticResource BorderLight}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="50,40">
+
+            <TextBlock Text="Just Drive." FontSize="28" FontWeight="Bold"
+                       Foreground="{StaticResource TextPrimary}" Margin="0,0,0,4"/>
+            <TextBlock Text="Maak een account aan" FontSize="16"
+                       Foreground="{StaticResource TextMuted}" Margin="0,0,0,30"/>
+
+            <!-- Toggle klant/bedrijf -->
+            <Grid Margin="0,0,0,24">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="ToggleKlant" Grid.Column="0" Content="👤  Particulier"
+                        Style="{StaticResource ToggleBtn}"
+                        Background="{StaticResource Accent}" Foreground="White"
+                        BorderBrush="{StaticResource Accent}"
+                        Click="ToggleKlant_Click" Margin="0,0,5,0"/>
+                <Button x:Name="ToggleBedrijf" Grid.Column="1" Content="🏢  Bedrijf"
+                        Style="{StaticResource ToggleBtn}"
+                        Click="ToggleBedrijf_Click" Margin="5,0,0,0"/>
+            </Grid>
+
+            <!-- Gemeenschappelijke velden -->
+            <TextBlock Text="Email" Style="{StaticResource InputLabel}"/>
+            <TextBox x:Name="TxtEmail" Style="{StaticResource InputField}"/>
+
+            <TextBlock Text="Wachtwoord" Style="{StaticResource InputLabel}"/>
+            <PasswordBox x:Name="TxtPassword" Height="38" Padding="10,8"
+                         BorderBrush="{StaticResource BorderLight}" BorderThickness="1"
+                         FontSize="14" Margin="0,0,0,16"/>
+
+            <TextBlock Text="Telefoon" Style="{StaticResource InputLabel}"/>
+            <TextBox x:Name="TxtTelefoon" Style="{StaticResource InputField}"/>
+
+            <TextBlock Text="Adres" Style="{StaticResource InputLabel}"/>
+            <TextBox x:Name="TxtAdres" Style="{StaticResource InputField}"/>
+
+            <TextBlock Text="Stad" Style="{StaticResource InputLabel}"/>
+            <TextBox x:Name="TxtStad" Style="{StaticResource InputField}"/>
+
+            <!-- Klant velden -->
+            <StackPanel x:Name="KlantVelden">
+                <TextBlock Text="Voornaam" Style="{StaticResource InputLabel}"/>
+                <TextBox x:Name="TxtVoornaam" Style="{StaticResource InputField}"/>
+
+                <TextBlock Text="Achternaam" Style="{StaticResource InputLabel}"/>
+                <TextBox x:Name="TxtAchternaam" Style="{StaticResource InputField}"/>
+
+                <TextBlock Text="Geboortedatum" Style="{StaticResource InputLabel}"/>
+                <DatePicker x:Name="DpGeboortedatum" Height="38" Margin="0,0,0,16"/>
+
+                <TextBlock Text="Rijbewijsnummer" Style="{StaticResource InputLabel}"/>
+                <TextBox x:Name="TxtRijbewijs" Style="{StaticResource InputField}"/>
+            </StackPanel>
+
+            <!-- Bedrijf velden -->
+            <StackPanel x:Name="BedrijfVelden" Visibility="Collapsed">
+                <TextBlock Text="Bedrijfsnaam" Style="{StaticResource InputLabel}"/>
+                <TextBox x:Name="TxtBedrijfsnaam" Style="{StaticResource InputField}"/>
+
+                <TextBlock Text="BTW nummer" Style="{StaticResource InputLabel}"/>
+                <TextBox x:Name="TxtBTW" Style="{StaticResource InputField}"/>
+            </StackPanel>
+
+            <Button Content="Registreren" Style="{StaticResource PrimaryButton}"
+                    HorizontalAlignment="Stretch" Margin="0,8,0,16"
+                    Click="Registreer_Click"/>
+
+            <Button Content="Al een account? Log in" Style="{StaticResource SecondaryButton}"
+                    HorizontalAlignment="Stretch" Margin="0,0,0,16"
+                    Click="Login_Click"/>
+
+        </StackPanel>
+    </ScrollViewer>
 </Window>
