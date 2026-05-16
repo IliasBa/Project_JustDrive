@@ -152,28 +152,16 @@
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                 <StackPanel Margin="32,28" MaxWidth="600" HorizontalAlignment="Left">
 
-                    <Border Background="White" CornerRadius="12" Padding="32">
+                    <Border Background="White" CornerRadius="12" Padding="30,10">
                         <StackPanel>
 
                             <!-- Name row -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="16"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
-
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Voornaam" Style="{StaticResource FormLabel}"/>
-                                    <TextBox x:Name="txtFirstName" Style="{StaticResource FormInput}"/>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Achternaam" Style="{StaticResource FormLabel}"/>
-                                    <TextBox x:Name="txtLastName" Style="{StaticResource FormInput}"/>
-                                </StackPanel>
-                            </Grid>
-
+                            <TextBlock Text="Voornaam" Style="{StaticResource FormLabel}"/>
+                            <TextBox x:Name="txtFirstName" Style="{StaticResource FormInput}"/>
+                                
+                            <TextBlock Text="Achternaam" Style="{StaticResource FormLabel}"/>
+                            <TextBox x:Name="txtLastName" Style="{StaticResource FormInput}"/>
+                                
                             <!-- Email -->
                             <TextBlock Text="Email" Style="{StaticResource FormLabel}"/>
                             <TextBox x:Name="txtEmail" Style="{StaticResource FormInput}"/>
@@ -182,28 +170,21 @@
                             <TextBlock Text="Telefoonnummer" Style="{StaticResource FormLabel}"/>
                             <TextBox x:Name="txtPhone" Style="{StaticResource FormInput}"/>
 
-                            <!-- Address row -->
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="16"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
 
-                                <StackPanel Grid.Column="0">
-                                    <TextBlock Text="Adres" Style="{StaticResource FormLabel}"/>
-                                    <TextBox x:Name="txtAdres" Style="{StaticResource FormInput}"/>
-                                </StackPanel>
 
-                                <StackPanel Grid.Column="2">
-                                    <TextBlock Text="Stad" Style="{StaticResource FormLabel}"/>
-                                    <TextBox x:Name="txtCity" Style="{StaticResource FormInput}"/>
-                                </StackPanel>
-                            </Grid>
+                            <TextBlock Text="Adres" Style="{StaticResource FormLabel}"/>
+                            <TextBox x:Name="txtAdres" Style="{StaticResource FormInput}"/>
+
+                            <TextBlock Text="Postcode" Style="{StaticResource FormLabel}"/>
+                            <TextBox x:Name="txtPostcode" Style="{StaticResource FormInput}"/>
+
+                            <TextBlock Text="Stad" Style="{StaticResource FormLabel}"/>
+                            <TextBox x:Name="txtCity" Style="{StaticResource FormInput}"/>
+
 
                             <!-- Birthday -->
                             <TextBlock Text="Geboortedatum" Style="{StaticResource FormLabel}"/>
-                            <DatePicker x:Name="dpBirthday" Margin="0,0,0,16" Padding="10,8"/>
+                            <DatePicker x:Name="dpBirthday" Margin="0,0,0,16" Padding="10,8"  />
 
                             <!-- Licence -->
                             <TextBlock Text="Rijbewijsnummer" Style="{StaticResource FormLabel}"/>

@@ -18,12 +18,13 @@ namespace Project_JustDrive.Services
                 {
                     conn.Open();
 
-                    string query = @"INSERT INTO damagereport (ReservationId, UserId, Description) 
-                                 VALUES (@reservationId, @userId, @description)";
+                    string query = @"INSERT INTO damagereport (ReservationId, UserId, DamageLevel, Description) 
+                             VALUES (@reservationId, @userId, @damageLevel, @description)";
 
                     var cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@reservationId", report.ReservationId);
                     cmd.Parameters.AddWithValue("@userId", report.UserId);
+                    cmd.Parameters.AddWithValue("@damageLevel", report.DamageLevel);
                     cmd.Parameters.AddWithValue("@description", report.Description);
 
                     cmd.ExecuteNonQuery();

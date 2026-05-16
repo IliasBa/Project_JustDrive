@@ -21,58 +21,50 @@ namespace Project_JustDrive.Services
             {
                 conn.Open();
 
-                string query = @"
-                SELECT r.Id,
-                       r.Start_date,
-                       r.End_date,
-                       c.Car_Brand,
-                       c.Model,
-                       c.Price_per_day,
-                        r.CarId
-                FROM reservation r
-                JOIN car c ON c.Id = r.CarId
-                WHERE r.CustomerId = @customerId";
+                string query = @"SELECT r.Id, r.Start_date, r.End_date, r.CarId,
+                                cn.Brand, cn.Model, c.Price_Per_Day
+                         FROM reservation r
+                         JOIN car c ON c.Id = r.CarId
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         WHERE r.CustomerId = @customerId";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
-                
-                cmd.Parameters.AddWithValue("@customerId", Session.CurrentCustomer.UserId);
+                cmd.Parameters.AddWithValue("@customerId", userId);
 
                 var reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
-                    Reservation reservation = new Reservation
+                    reservations.Add(new Reservation
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        StartDate = Convert.ToDateTime(reader["Start_Date"]),
-                        EndDate = Convert.ToDateTime(reader["End_Date"]),
-                        CarBrand = reader["Car_Brand"].ToString(),
+                        StartDate = Convert.ToDateTime(reader["Start_date"]),
+                        EndDate = Convert.ToDateTime(reader["End_date"]),
+                        CarBrand = reader["Brand"].ToString(),
                         CarModel = reader["Model"].ToString(),
-                        PricePerDay = Convert.ToDecimal(reader["Price_per_day"]),
+                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         CarId = Convert.ToInt32(reader["CarId"])
-
-                    };
-
-                    reservations.Add(reservation);
+                    });
                 }
             }
 
             return reservations;
         }
+
         public Reservation GetActiveReservationByCustomer(int userId)
         {
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
 
-                string query = @"
-                        SELECT r.Id, r.Start_date, r.End_date, r.CarId,
-                               c.Car_Brand, c.Model, c.Price_per_day
-                        FROM reservation r
-                        JOIN car c ON c.Id = r.CarId
-                        WHERE r.CustomerId = @customerId
-                        AND CURDATE() BETWEEN r.Start_date AND r.End_date
-                        LIMIT 1";
+                string query = @"SELECT r.Id, r.Start_date, r.End_date, r.CarId,
+                                cn.Brand, cn.Model, c.Price_Per_Day
+                         FROM reservation r
+                         JOIN car c ON c.Id = r.CarId
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         WHERE r.CustomerId = @customerId
+                         AND CURDATE() BETWEEN r.Start_date AND r.End_date
+                         LIMIT 1";
 
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@customerId", userId);
@@ -86,11 +78,10 @@ namespace Project_JustDrive.Services
                         Id = Convert.ToInt32(reader["Id"]),
                         StartDate = Convert.ToDateTime(reader["Start_date"]),
                         EndDate = Convert.ToDateTime(reader["End_date"]),
-                        CarBrand = reader["Car_Brand"].ToString(),
+                        CarBrand = reader["Brand"].ToString(),
                         CarModel = reader["Model"].ToString(),
-                        PricePerDay = Convert.ToDecimal(reader["Price_per_day"]),
+                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         CarId = Convert.ToInt32(reader["CarId"])
-
                     };
                 }
 
@@ -107,9 +98,10 @@ namespace Project_JustDrive.Services
                 conn.Open();
 
                 string query = @"SELECT r.Id, r.Start_date, r.End_date, r.CarId,
-                                c.Car_Brand, c.Model, c.Price_per_day
+                                cn.Brand, cn.Model, c.Price_Per_Day
                          FROM reservation r
                          JOIN car c ON c.Id = r.CarId
+                         JOIN carname cn ON cn.Id = c.CarNameId
                          WHERE r.CustomerId = @customerId
                          AND r.Start_date > CURDATE()
                          ORDER BY r.Start_date ASC";
@@ -124,9 +116,9 @@ namespace Project_JustDrive.Services
                     {
                         Id = Convert.ToInt32(reader["Id"]),
                         CarId = Convert.ToInt32(reader["CarId"]),
-                        CarBrand = reader["Car_Brand"].ToString(),
+                        CarBrand = reader["Brand"].ToString(),
                         CarModel = reader["Model"].ToString(),
-                        PricePerDay = Convert.ToDecimal(reader["Price_per_day"]),
+                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         StartDate = Convert.ToDateTime(reader["Start_date"]),
                         EndDate = Convert.ToDateTime(reader["End_date"])
                     });

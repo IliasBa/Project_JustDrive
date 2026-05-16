@@ -5,7 +5,7 @@ namespace JustDrive.Database
     public class DatabaseConnection
     {
         private static string connectionString =
-            "Server=localhost;Database=justdrive;Uid=root;Pwd=;";
+            "Server=localhost;Database=dbjustdrive;Uid=root;Pwd=;";
 
         public static MySqlConnection GetConnection()
         {

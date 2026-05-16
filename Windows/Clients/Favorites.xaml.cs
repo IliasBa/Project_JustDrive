@@ -27,9 +27,11 @@ namespace Project_JustDrive.Windows.Clients
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
-                string query = @"SELECT c.* FROM car c
-                                 INNER JOIN favorite f ON c.Id = f.CarId
-                                 WHERE f.UserId = @userId";
+                string query = @"SELECT c.*, cn.Brand, cn.Model 
+                         FROM car c
+                         INNER JOIN favorite f ON c.Id = f.CarId
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         WHERE f.UserId = @userId";
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@userId", _userId);
                 var reader = cmd.ExecuteReader();
@@ -39,7 +41,8 @@ namespace Project_JustDrive.Windows.Clients
                     _favorieten.Add(new Car
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        CarBrand = reader["Car_Brand"].ToString(),
+                        CarBrand = reader["Brand"].ToString(),  // ← was Car_Brand
+                        Model = reader["Model"].ToString(),     // ← add this
                         Type = reader["TYPE"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         Fuel = reader["Fuel"].ToString(),
@@ -106,6 +109,7 @@ namespace Project_JustDrive.Windows.Clients
         {
             Profile profile = new Profile();
             profile.Show();
+            this.Close();
         }
     }
 }

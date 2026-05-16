@@ -1,5 +1,6 @@
 ﻿using JustDrive.Database;
 using MySql.Data.MySqlClient;
+using Project_JustDrive.Services;
 using System;
 using System.Windows;
 using System.Windows.Media;
@@ -48,8 +49,8 @@ namespace Project_JustDrive.Windows
         private void Registreer_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(TxtEmail.Text) || string.IsNullOrEmpty(TxtTelefoon.Text) ||
-                string.IsNullOrEmpty(TxtAdres.Text) || string.IsNullOrEmpty(TxtStad.Text) ||
-                TxtPassword.Password.Length == 0)
+                     string.IsNullOrEmpty(TxtAdres.Text) || string.IsNullOrEmpty(TxtPostcode.Text) || // ← add
+                     string.IsNullOrEmpty(TxtStad.Text) || TxtPassword.Password.Length == 0)
             {
                 MessageBox.Show("Vul alle verplichte velden in.");
                 return;
@@ -63,16 +64,18 @@ namespace Project_JustDrive.Windows
 
                     // User aanmaken
                     string role = _isKlant ? "customer" : "company";
-                    string userQuery = @"INSERT INTO user (Email, PASSWORD, Phone_Number, Role, Adres, City)
-                                        VALUES (@email, @password, @telefoon, @role, @adres, @stad)";
+                    string userQuery = @"INSERT INTO user (Email, PASSWORD, Phone_Number, Role, Adres, Postcode, City)
+                     VALUES (@email, @password, @telefoon, @role, @adres, @postcode, @stad)";
                     var userCmd = new MySqlCommand(userQuery, conn);
                     userCmd.Parameters.AddWithValue("@email", TxtEmail.Text);
-                    userCmd.Parameters.AddWithValue("@password", TxtPassword.Password);
+                    string hashedPassword = PasswordHelper.Hash(TxtPassword.Password);
+                    userCmd.Parameters.AddWithValue("@password", hashedPassword);
                     userCmd.Parameters.AddWithValue("@telefoon", TxtTelefoon.Text);
                     userCmd.Parameters.AddWithValue("@role", role);
                     userCmd.Parameters.AddWithValue("@adres", TxtAdres.Text);
+                    userCmd.Parameters.AddWithValue("@postcode", TxtPostcode.Text); 
                     userCmd.Parameters.AddWithValue("@stad", TxtStad.Text);
-                    userCmd.ExecuteNonQuery();
+                    userCmd.ExecuteNonQuery(); ;
 
                     // Nieuw userId ophalen
                     long newUserId = userCmd.LastInsertedId;
@@ -86,34 +89,38 @@ namespace Project_JustDrive.Windows
                             return;
                         }
 
-                        string customerQuery = @"INSERT INTO customer (UserId, First_Name, Last_Name, Birthday, Licence_Number)
-                                                VALUES (@userId, @voornaam, @achternaam, @geboortedatum, @rijbewijs)";
+                        string customerQuery = @"INSERT INTO customer (UserId, First_Name, Last_Name, Birthday, Licence_Number, Actief_Sinds)
+                         VALUES (@userId, @voornaam, @achternaam, @geboortedatum, @rijbewijs, @actiefSinds)";
                         var customerCmd = new MySqlCommand(customerQuery, conn);
                         customerCmd.Parameters.AddWithValue("@userId", newUserId);
                         customerCmd.Parameters.AddWithValue("@voornaam", TxtVoornaam.Text);
                         customerCmd.Parameters.AddWithValue("@achternaam", TxtAchternaam.Text);
                         customerCmd.Parameters.AddWithValue("@geboortedatum", DpGeboortedatum.SelectedDate.Value);
                         customerCmd.Parameters.AddWithValue("@rijbewijs", TxtRijbewijs.Text);
+                        customerCmd.Parameters.AddWithValue("@actiefSinds", DateTime.Today); 
                         customerCmd.ExecuteNonQuery();
                     }
                     else
                     {
-                        if (string.IsNullOrEmpty(TxtBedrijfsnaam.Text) || string.IsNullOrEmpty(TxtBTW.Text))
+                        if (string.IsNullOrEmpty(TxtBedrijfsnaam.Text) || string.IsNullOrEmpty(TxtBTW.Text) || string.IsNullOrEmpty(TxtIBAN.Text))
                         {
                             MessageBox.Show("Vul alle bedrijf velden in.");
                             return;
                         }
 
-                        string companyQuery = @"INSERT INTO company (UserId, Company_Name, VAT_number)
-                                               VALUES (@userId, @naam, @btw)";
+                        string companyQuery = @"INSERT INTO company (UserId, Company_Name, VAT_number, IBAN)
+                        VALUES (@userId, @naam, @btw, @iban)";
                         var companyCmd = new MySqlCommand(companyQuery, conn);
                         companyCmd.Parameters.AddWithValue("@userId", newUserId);
                         companyCmd.Parameters.AddWithValue("@naam", TxtBedrijfsnaam.Text);
                         companyCmd.Parameters.AddWithValue("@btw", TxtBTW.Text);
+                        companyCmd.Parameters.AddWithValue("@iban", TxtIBAN.Text); 
                         companyCmd.ExecuteNonQuery();
                     }
 
                     MessageBox.Show("Account aangemaakt! Je kan nu inloggen.");
+                    MainWindow inlog = new MainWindow();
+                    inlog.Show();
                     this.Close();
                 }
             }
@@ -122,7 +129,6 @@ namespace Project_JustDrive.Windows
                 MessageBox.Show("Fout: " + ex.Message);
             }
         }
-
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             MainWindow login = new MainWindow();

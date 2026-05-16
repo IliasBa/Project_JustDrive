@@ -71,17 +71,18 @@ namespace Project_JustDrive.Windows.Company
 
                 // Recente reservaties
                 string recentQuery = @"SELECT 
-                                        CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
-                                        CONCAT(c.Car_Brand, ' ', c.Model) AS AutoNaam,
-                                        r.Start_date AS StartDate,
-                                        r.End_date AS EndDate,
-                                        r.Total_price AS TotalPrice
-                                       FROM reservation r
-                                       INNER JOIN car c ON r.CarId = c.Id
-                                       INNER JOIN customer cu ON r.CustomerId = cu.UserId
-                                       WHERE c.CompanyId = @id
-                                       ORDER BY r.Start_date DESC
-                                       LIMIT 5";
+                                CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
+                                CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
+                                r.Start_date AS StartDate,
+                                r.End_date AS EndDate,
+                                r.Total_price AS TotalPrice
+                               FROM reservation r
+                               INNER JOIN car c ON r.CarId = c.Id
+                               JOIN carname cn ON cn.Id = c.CarNameId
+                               INNER JOIN customer cu ON r.CustomerId = cu.UserId
+                               WHERE c.CompanyId = @id
+                               ORDER BY r.Start_date DESC
+                               LIMIT 5";
                 var recentCmd = new MySqlCommand(recentQuery, conn);
                 recentCmd.Parameters.AddWithValue("@id", _userId);
                 var recentReader = recentCmd.ExecuteReader();

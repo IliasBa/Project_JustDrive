@@ -1,0 +1,68 @@
+﻿<Window x:Class="Project_JustDrive.Windows.Clients.CompareWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Just Drive - Vergelijk"
+        Height="700" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F6F8">
+
+    <Window.Resources>
+        <SolidColorBrush x:Key="Accent" Color="#F26B1F"/>
+        <SolidColorBrush x:Key="AccentHover" Color="#D85A14"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#0F1B2D"/>
+        <SolidColorBrush x:Key="TextMuted" Color="#6B7280"/>
+        <SolidColorBrush x:Key="BorderLight" Color="#E5E7EB"/>
+
+        <Style x:Key="PrimaryButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource Accent}"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="bd" Background="{TemplateBinding Background}" CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"
+                                              Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="bd" Property="Background" Value="{StaticResource AccentHover}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top bar -->
+        <Border Grid.Row="0" Background="White" Padding="32,18"
+                BorderBrush="{StaticResource BorderLight}" BorderThickness="0,0,0,1">
+            <Grid>
+                <TextBlock Text="Vergelijk auto's" FontSize="20" FontWeight="Bold"
+                           Foreground="{StaticResource TextPrimary}"/>
+                <Button Content="← Terug" Style="{StaticResource PrimaryButton}"
+                        HorizontalAlignment="Right" Padding="16,8"
+                        Click="Terug_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- Compare content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="32,28">
+                <Border Background="White" CornerRadius="12" Padding="28">
+                    <Grid x:Name="CompareGrid"/>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Window>

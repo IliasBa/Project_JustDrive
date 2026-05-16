@@ -25,16 +25,18 @@ namespace Project_JustDrive.Windows.Company
             {
                 conn.Open();
                 string query = @"SELECT 
-                                    CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
-                                    CONCAT(c.Car_Brand, ' ', c.Model) AS AutoNaam,
-                                    r.Start_date AS ReservatieDatum,
-                                    d.Description AS Beschrijving
-                                 FROM damagereport d
-                                 INNER JOIN reservation r ON d.ReservationId = r.Id
-                                 INNER JOIN car c ON r.CarId = c.Id
-                                 INNER JOIN customer cu ON d.UserId = cu.UserId
-                                 WHERE c.CompanyId = @id
-                                 ORDER BY r.Start_date DESC";
+                            CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
+                            CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
+                            r.Start_date AS ReservatieDatum,
+                            d.DamageLevel AS Schadeniveau,
+                            d.Description AS Beschrijving
+                         FROM damagereport d
+                         INNER JOIN reservation r ON d.ReservationId = r.Id
+                         INNER JOIN car c ON r.CarId = c.Id
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         INNER JOIN customer cu ON d.UserId = cu.UserId
+                         WHERE c.CompanyId = @id
+                         ORDER BY r.Start_date DESC";
 
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", _userId);
@@ -47,6 +49,7 @@ namespace Project_JustDrive.Windows.Company
                         KlantNaam = reader["KlantNaam"].ToString(),
                         AutoNaam = reader["AutoNaam"].ToString(),
                         ReservatieDatum = Convert.ToDateTime(reader["ReservatieDatum"]).ToString("dd/MM/yyyy"),
+                        Schadeniveau = reader["Schadeniveau"].ToString(),  // ← add
                         Beschrijving = reader["Beschrijving"].ToString()
                     });
                 }

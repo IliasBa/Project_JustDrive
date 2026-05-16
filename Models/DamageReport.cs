@@ -9,6 +9,7 @@ namespace Project_JustDrive.Models
         public int Id { get; set; }
         public int ReservationId { get; set; }
         public int UserId { get; set; }
+        public string DamageLevel { get; set; }
         public string Description { get; set; }
     }
 }

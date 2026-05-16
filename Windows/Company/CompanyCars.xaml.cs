@@ -26,7 +26,10 @@ namespace Project_JustDrive.Windows.Company
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM car WHERE CompanyId = @id";
+                string query = @"SELECT c.*, cn.Brand, cn.Model 
+                         FROM car c
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         WHERE c.CompanyId = @id";
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", _userId);
                 var reader = cmd.ExecuteReader();
@@ -36,7 +39,7 @@ namespace Project_JustDrive.Windows.Company
                     cars.Add(new Car
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        CarBrand = reader["Car_Brand"].ToString(),
+                        CarBrand = reader["Brand"].ToString(),
                         Model = reader["Model"].ToString(),
                         Type = reader["TYPE"].ToString(),
                         Fuel = reader["Fuel"].ToString(),

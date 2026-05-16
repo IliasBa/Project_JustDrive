@@ -7,10 +7,11 @@ namespace Project_JustDrive.Models
     public class Car
     {
         public int Id { get; set; }
+        public int CarNameId { get; set; }   
+        public string CarBrand { get; set; } 
+        public string Model { get; set; }   
         public decimal PricePerDay { get; set; }
         public decimal Deposit { get; set; }
-        public string CarBrand { get; set; }
-        public string Model { get; set; }
         public int CompanyId { get; set; }
         public decimal PricePer100km { get; set; }
         public string Fuel { get; set; }
@@ -18,6 +19,5 @@ namespace Project_JustDrive.Models
         public string Type { get; set; }
         public string LicensePlate { get; set; }
         public string? ImagePath { get; set; }
-
     }
 }

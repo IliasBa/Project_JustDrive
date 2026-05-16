@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Project_JustDrive.Windows.Clients
 {
@@ -22,8 +23,7 @@ namespace Project_JustDrive.Windows.Clients
             DpStart.SelectedDateChanged += DateChanged;
             DpEnd.SelectedDateChanged += DateChanged;
 
-            DpStart.SelectedDateChanged += DateChanged;
-            DpEnd.SelectedDateChanged += DateChanged;
+            BlockBookedDates();
         }
 
         private void LoadCarDetails()
@@ -31,7 +31,10 @@ namespace Project_JustDrive.Windows.Clients
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT * FROM car WHERE Id = @id";
+                string query = @"SELECT c.*, cn.Brand, cn.Model 
+                         FROM car c
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         WHERE c.Id = @id";
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", _carId);
                 var reader = cmd.ExecuteReader();
@@ -39,7 +42,7 @@ namespace Project_JustDrive.Windows.Clients
                 if (reader.Read())
                 {
                     _pricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]);
-                    TxtNaam.Text = reader["Car_Brand"] + " " + reader["Model"];
+                    TxtNaam.Text = reader["Brand"] + " " + reader["Model"];
                     TxtType.Text = reader["TYPE"].ToString();
                     TxtBrandstof.Text = reader["Fuel"].ToString();
                     TxtTransmissie.Text = reader["Transmission"].ToString();
@@ -51,8 +54,14 @@ namespace Project_JustDrive.Windows.Clients
             }
         }
 
-        private void DateChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void DateChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (DpStart.SelectedDate != null)
+            {
+                // End date must be after start date
+                DpEnd.DisplayDateStart = DpStart.SelectedDate.Value.AddDays(1);
+            }
+
             if (DpStart.SelectedDate != null && DpEnd.SelectedDate != null)
             {
                 TimeSpan duration = DpEnd.SelectedDate.Value - DpStart.SelectedDate.Value;
@@ -67,7 +76,6 @@ namespace Project_JustDrive.Windows.Clients
                 }
             }
         }
-
         private void BtnReserveer_Click(object sender, RoutedEventArgs e)
         {
             if (DpStart.SelectedDate == null || DpEnd.SelectedDate == null)
@@ -83,6 +91,13 @@ namespace Project_JustDrive.Windows.Clients
                 return;
             }
 
+            // ← Check if car is already booked
+            if (IsCarAlreadyBooked(DpStart.SelectedDate.Value, DpEnd.SelectedDate.Value))
+            {
+                MessageBox.Show("Deze auto is al gereserveerd voor de geselecteerde periode.");
+                return;
+            }
+
             decimal total = duration.Days * _pricePerDay;
 
             try
@@ -91,7 +106,7 @@ namespace Project_JustDrive.Windows.Clients
                 {
                     conn.Open();
                     string query = @"INSERT INTO reservation (Start_date, End_date, Total_price, CustomerId, CarId)
-                                     VALUES (@start, @end, @total, @customerId, @carId)";
+                             VALUES (@start, @end, @total, @customerId, @carId)";
                     var cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@start", DpStart.SelectedDate.Value);
                     cmd.Parameters.AddWithValue("@end", DpEnd.SelectedDate.Value);
@@ -101,7 +116,6 @@ namespace Project_JustDrive.Windows.Clients
                     cmd.ExecuteNonQuery();
 
                     MessageBox.Show($"Reservatie geplaatst! Totaal: €{total}");
-
                     RentCar rentCar = new RentCar(_userId);
                     rentCar.Show();
                     this.Close();
@@ -110,6 +124,26 @@ namespace Project_JustDrive.Windows.Clients
             catch (Exception ex)
             {
                 MessageBox.Show("Fout: " + ex.Message);
+            }
+        }
+        private bool IsCarAlreadyBooked(DateTime start, DateTime end)
+        {
+            using (var conn = DatabaseConnection.GetConnection())
+            {
+                conn.Open();
+
+                // Check if any existing reservation overlaps with the selected dates
+                string query = @"SELECT COUNT(*) FROM reservation 
+                         WHERE CarId = @carId
+                         AND NOT (End_date <= @start OR Start_date >= @end)";
+
+                var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@carId", _carId);
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+
+                int count = Convert.ToInt32(cmd.ExecuteScalar());
+                return count > 0;
             }
         }
 
@@ -162,7 +196,6 @@ namespace Project_JustDrive.Windows.Clients
                 MessageBox.Show("Fout: " + ex.Message);
             }
         }
-
         private void CheckIsFavoriet()
         {
             using (var conn = DatabaseConnection.GetConnection())
@@ -176,6 +209,35 @@ namespace Project_JustDrive.Windows.Clients
 
                 if (count > 0)
                     BtnFavoriet.Content = "💔  Verwijderen uit favorieten";
+            }
+        }
+        private void BlockBookedDates()
+        {
+            // Grey out past dates
+            DpStart.DisplayDateStart = DateTime.Today;
+            DpEnd.DisplayDateStart = DateTime.Today;
+
+            // Block already booked dates with blackout
+            using (var conn = DatabaseConnection.GetConnection())
+            {
+                conn.Open();
+
+                string query = "SELECT Start_date, End_date FROM reservation WHERE CarId = @carId";
+                var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@carId", _carId);
+                var reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    DateTime start = Convert.ToDateTime(reader["Start_date"]);
+                    DateTime end = Convert.ToDateTime(reader["End_date"]);
+
+                    for (DateTime date = start; date <= end; date = date.AddDays(1))
+                    {
+                        DpStart.BlackoutDates.Add(new CalendarDateRange(date, date));
+                        DpEnd.BlackoutDates.Add(new CalendarDateRange(date, date));
+                    }
+                }
             }
         }
     }

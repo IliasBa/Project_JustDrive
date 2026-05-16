@@ -10,5 +10,6 @@ namespace Project_JustDrive.Models
         public string FirstName { get; set; }
         public DateTime Birthday { get; set; }
         public string LicenceNumber { get; set; }
+        public DateTime ActiefSinds { get; set; }
     }
 }

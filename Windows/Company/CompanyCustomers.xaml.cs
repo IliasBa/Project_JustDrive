@@ -73,14 +73,15 @@ namespace Project_JustDrive.Windows.Company
             {
                 conn.Open();
                 string query = @"SELECT 
-                                    CONCAT(c.Car_Brand, ' ', c.Model) AS AutoNaam,
-                                    r.Start_date AS StartDate,
-                                    r.End_date AS EndDate,
-                                    r.Total_price AS TotalPrice
-                                 FROM reservation r
-                                 INNER JOIN car c ON r.CarId = c.Id
-                                 WHERE r.CustomerId = @klantId AND c.CompanyId = @companyId
-                                 ORDER BY r.Start_date DESC";
+                            CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
+                            r.Start_date AS StartDate,
+                            r.End_date AS EndDate,
+                            r.Total_price AS TotalPrice
+                         FROM reservation r
+                         INNER JOIN car c ON r.CarId = c.Id
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         WHERE r.CustomerId = @klantId AND c.CompanyId = @companyId
+                         ORDER BY r.Start_date DESC";
 
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@klantId", klantId);

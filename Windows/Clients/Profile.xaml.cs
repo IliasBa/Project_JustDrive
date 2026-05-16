@@ -1,33 +1,21 @@
 ﻿using JustDrive.Database;
 using MySql.Data.MySqlClient;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Project_JustDrive.Models;
 using Project_JustDrive.Services;
 
-
 namespace Project_JustDrive.Windows.Clients
 {
-    /// <summary>
-    /// Interaction logic for Profile.xaml
-    /// </summary>
     public partial class Profile : Window
     {
         private int _userid = Session.CurrentUser.UserId;
+
         public Profile()
         {
             InitializeComponent();
             LoadProfileData();
-
 
             txtProfileInitials.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
             txtProfileName.Text = $"{Session.CurrentCustomer.FirstName} {Session.CurrentCustomer.LastName}";
@@ -45,11 +33,10 @@ namespace Project_JustDrive.Windows.Clients
             dpBirthday.SelectedDate = customer.Birthday;
             txtLicence.Text = customer.LicenceNumber;
 
-            // Load phone, address, city from database
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT Phone_Number, Adres, City FROM user WHERE User_Id = @id";
+                string query = "SELECT Phone_Number, Adres, Postcode, City FROM user WHERE User_Id = @id";
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", user.UserId);
                 var reader = cmd.ExecuteReader();
@@ -58,6 +45,7 @@ namespace Project_JustDrive.Windows.Clients
                 {
                     txtPhone.Text = reader["Phone_Number"].ToString();
                     txtAdres.Text = reader["Adres"].ToString();
+                    txtPostcode.Text = reader["Postcode"].ToString();
                     txtCity.Text = reader["City"].ToString();
                 }
             }
@@ -78,32 +66,38 @@ namespace Project_JustDrive.Windows.Clients
                 {
                     conn.Open();
 
-                    // Update user table
                     string userQuery;
                     if (!string.IsNullOrEmpty(txtPassword.Password))
                     {
+                        string hashedPassword = PasswordHelper.Hash(txtPassword.Password);
                         userQuery = @"UPDATE user SET Email = @email, Phone_Number = @phone, 
-                                      Adres = @adres, City = @city, Password = @password
+                                      Adres = @adres, Postcode = @postcode, City = @city, 
+                                      Password = @password
                                       WHERE User_Id = @id";
+                        var userCmd = new MySqlCommand(userQuery, conn);
+                        userCmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                        userCmd.Parameters.AddWithValue("@phone", txtPhone.Text);
+                        userCmd.Parameters.AddWithValue("@adres", txtAdres.Text);
+                        userCmd.Parameters.AddWithValue("@postcode", txtPostcode.Text);
+                        userCmd.Parameters.AddWithValue("@city", txtCity.Text);
+                        userCmd.Parameters.AddWithValue("@password", hashedPassword);
+                        userCmd.Parameters.AddWithValue("@id", Session.CurrentUser.UserId);
+                        userCmd.ExecuteNonQuery();
                     }
                     else
                     {
                         userQuery = @"UPDATE user SET Email = @email, Phone_Number = @phone, 
-                                      Adres = @adres, City = @city
+                                      Adres = @adres, Postcode = @postcode, City = @city
                                       WHERE User_Id = @id";
+                        var userCmd = new MySqlCommand(userQuery, conn);
+                        userCmd.Parameters.AddWithValue("@email", txtEmail.Text);
+                        userCmd.Parameters.AddWithValue("@phone", txtPhone.Text);
+                        userCmd.Parameters.AddWithValue("@adres", txtAdres.Text);
+                        userCmd.Parameters.AddWithValue("@postcode", txtPostcode.Text);
+                        userCmd.Parameters.AddWithValue("@city", txtCity.Text);
+                        userCmd.Parameters.AddWithValue("@id", Session.CurrentUser.UserId);
+                        userCmd.ExecuteNonQuery();
                     }
-
-                    var userCmd = new MySqlCommand(userQuery, conn);
-                    userCmd.Parameters.AddWithValue("@email", txtEmail.Text);
-                    userCmd.Parameters.AddWithValue("@phone", txtPhone.Text);
-                    userCmd.Parameters.AddWithValue("@adres", txtAdres.Text);
-                    userCmd.Parameters.AddWithValue("@city", txtCity.Text);
-                    userCmd.Parameters.AddWithValue("@id", Session.CurrentUser.UserId);
-
-                    if (!string.IsNullOrEmpty(txtPassword.Password))
-                        userCmd.Parameters.AddWithValue("@password", txtPassword.Password);
-
-                    userCmd.ExecuteNonQuery();
 
                     // Update customer table
                     string customerQuery = @"UPDATE customer SET First_Name = @firstName, 
@@ -117,7 +111,6 @@ namespace Project_JustDrive.Windows.Clients
                     customerCmd.Parameters.AddWithValue("@birthday", dpBirthday.SelectedDate);
                     customerCmd.Parameters.AddWithValue("@licence", txtLicence.Text);
                     customerCmd.Parameters.AddWithValue("@id", Session.CurrentUser.UserId);
-
                     customerCmd.ExecuteNonQuery();
 
                     // Update session
@@ -126,6 +119,10 @@ namespace Project_JustDrive.Windows.Clients
                     Session.CurrentCustomer.Birthday = dpBirthday.SelectedDate ?? DateTime.Now;
                     Session.CurrentCustomer.LicenceNumber = txtLicence.Text;
                     Session.CurrentUser.Email = txtEmail.Text;
+                    Session.CurrentUser.PhoneNumber = txtPhone.Text;
+                    Session.CurrentUser.Adres = txtAdres.Text;
+                    Session.CurrentUser.Postcode = txtPostcode.Text;
+                    Session.CurrentUser.City = txtCity.Text;
 
                     MessageBox.Show("Profiel succesvol opgeslagen!");
                     this.Close();
@@ -161,7 +158,6 @@ namespace Project_JustDrive.Windows.Clients
             Favorieten favorite = new Favorieten(_userid);
             favorite.Show();
             this.Close();
-
         }
 
         private void Uitloggen_Click(object sender, RoutedEventArgs e)

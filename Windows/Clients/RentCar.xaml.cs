@@ -23,6 +23,7 @@ namespace Project_JustDrive.Windows.Clients
         private List<Car> AllCars = new List<Car>();
         private int _userId;
         private string ActiveFilter = "Alle";
+        private List<int> _selectedCarIds = new List<int>();
 
         public RentCar(int userId)
         {
@@ -46,7 +47,9 @@ namespace Project_JustDrive.Windows.Clients
             {
                 conn.Open();
 
-                string query = "SELECT * FROM car";
+                string query = @"SELECT c.*, cn.Brand, cn.Model 
+                         FROM car c
+                         JOIN carname cn ON cn.Id = c.CarNameId";
 
                 MySqlCommand cmd = new MySqlCommand(query, conn);
                 MySqlDataReader reader = cmd.ExecuteReader();
@@ -56,15 +59,13 @@ namespace Project_JustDrive.Windows.Clients
                     AllCars.Add(new Car
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        CarBrand = reader["Car_Brand"].ToString(),
-                        Model = reader["Model"].ToString(),
+                        CarBrand = reader["Brand"].ToString(),      // ← was Car_Brand
+                        Model = reader["Model"].ToString(),         // ← now from carname
                         Type = reader["TYPE"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         Fuel = reader["Fuel"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
-                        //ImagePath = reader["Image_Path"] == DBNull.Value || string.IsNullOrEmpty(reader["Image_Path"].ToString())
-                        //? null
-                        //: reader["Image_Path"].ToString()
+                        CompanyId = Convert.ToInt32(reader["CompanyId"])
                     });
                 }
             }
@@ -162,6 +163,38 @@ namespace Project_JustDrive.Windows.Clients
         {
             Profile profile = new Profile();
             profile.Show();
+            this.Close();
+        }
+
+        private void Vergelijk_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            int carId = (int)button.Tag;
+
+            if (_selectedCarIds.Contains(carId))
+            {
+                MessageBox.Show("Deze auto is al geselecteerd.");
+                return;
+            }
+
+            if (_selectedCarIds.Count >= 3)
+            {
+                MessageBox.Show("Je kan maximum 3 auto's vergelijken.");
+                return;
+            }
+
+            _selectedCarIds.Add(carId);
+
+            if (_selectedCarIds.Count >= 2)
+            {
+                CompareWindow compare = new CompareWindow(_selectedCarIds);
+                compare.Show();
+                _selectedCarIds.Clear();
+            }
+            else
+            {
+                MessageBox.Show($"Auto geselecteerd! Selecteer nog {2 - _selectedCarIds.Count} auto('s) om te vergelijken.");
+            }
         }
     }
 }

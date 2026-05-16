@@ -29,7 +29,6 @@ namespace Project_JustDrive.Windows.Clients
         }
 
         private void Melden_Click(object sender, RoutedEventArgs e)
-
         {
             if (string.IsNullOrEmpty(txtDescription.Text))
             {
@@ -37,10 +36,19 @@ namespace Project_JustDrive.Windows.Clients
                 return;
             }
 
+            if (cmbDamageLevel.SelectedItem == null)
+            {
+                MessageBox.Show("Kies een schadeniveau.");
+                return;
+            }
+
+            string damageLevel = (cmbDamageLevel.SelectedItem as ComboBoxItem)?.Content.ToString();
+
             DamageReport report = new DamageReport
             {
                 ReservationId = _reservationId,
                 UserId = Session.CurrentUser.UserId,
+                DamageLevel = damageLevel,    // ← add this
                 Description = txtDescription.Text
             };
 

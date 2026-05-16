@@ -146,8 +146,23 @@
             <TextBlock Text="Adres" Style="{StaticResource InputLabel}"/>
             <TextBox x:Name="TxtAdres" Style="{StaticResource InputField}"/>
 
-            <TextBlock Text="Stad" Style="{StaticResource InputLabel}"/>
-            <TextBox x:Name="TxtStad" Style="{StaticResource InputField}"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Postcode" Style="{StaticResource InputLabel}"/>
+                    <TextBox x:Name="TxtPostcode" Style="{StaticResource InputField}"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Stad" Style="{StaticResource InputLabel}"/>
+                    <TextBox x:Name="TxtStad" Style="{StaticResource InputField}"/>
+                </StackPanel>
+            </Grid>
 
             <!-- Klant velden -->
             <StackPanel x:Name="KlantVelden">
@@ -171,6 +186,9 @@
 
                 <TextBlock Text="BTW nummer" Style="{StaticResource InputLabel}"/>
                 <TextBox x:Name="TxtBTW" Style="{StaticResource InputField}"/>
+
+                <TextBlock Text="IBAN" Style="{StaticResource InputLabel}"/>
+                <TextBox x:Name="TxtIBAN" Style="{StaticResource InputField}"/>
             </StackPanel>
 
             <Button Content="Registreren" Style="{StaticResource PrimaryButton}"

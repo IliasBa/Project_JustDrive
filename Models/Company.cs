@@ -8,5 +8,6 @@ namespace Project_JustDrive.Models
     {
         public string CompanyName { get; set; }
         public string VATNumber { get; set; }
+        public string IBAN { get; set; } 
     }
 }

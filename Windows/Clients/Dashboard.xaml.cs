@@ -28,7 +28,6 @@ namespace Project_JustDrive.Windows.Clients
             txtProfileName.Text = Session.CurrentCustomer.FirstName + " " + Session.CurrentCustomer.LastName;
             txtWelcome.Text += Session.CurrentCustomer.FirstName;
             txtProfileInitials.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
-
         }
 
         private void Zoeken_Click(object sender, RoutedEventArgs e)
@@ -52,6 +51,7 @@ namespace Project_JustDrive.Windows.Clients
         {
             Profile profile = new Profile();
             profile.Show();
+            this.Close();
         }
 
         private void Uitloggen_Click(object sender, RoutedEventArgs e)
@@ -101,20 +101,20 @@ namespace Project_JustDrive.Windows.Clients
                 _activeCarId = active.CarId;
                 _activeReservationId = active.Id;
                 txtActiveCarName.Text = $"{active.CarBrand} {active.CarModel}";
-                txtActiveDateRange.Text = $"{active.StartDate:dd/MM/yyyy} → {active.EndDate:dd/MM/yyyy}";
+                txtActiveDateRange.Text = $"{active.StartDate:dd/MM/yyyy} - {active.EndDate:dd/MM/yyyy}";
                 txtActivePrice.Text = $"€ {active.PricePerDay}";
                 gridActiveReservation.Visibility = Visibility.Visible;
-
+                stackNoActive.Visibility = Visibility.Collapsed; 
             }
             else
             {
-                // Clear the labels
                 txtActiveCarName.Text = "";
                 txtActiveDateRange.Text = "";
                 txtActivePrice.Text = "";
                 _activeCarId = 0;
                 _activeReservationId = 0;
                 gridActiveReservation.Visibility = Visibility.Collapsed;
+                stackNoActive.Visibility = Visibility.Visible; 
             }
         }
         private void LoadFutureReservations()
@@ -154,8 +154,6 @@ namespace Project_JustDrive.Windows.Clients
 
         private void SchadeMelden_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show($"ActiveReservationId: {_activeReservationId}");
-
             if (_activeReservationId > 0)
             {
                 ReportDamage reportDamage = new ReportDamage(_activeReservationId);
@@ -181,9 +179,9 @@ namespace Project_JustDrive.Windows.Clients
                     ReservationService service = new ReservationService();
                     service.CancelReservation(reservation.ReservationId);
 
-
-                    FutureReservationsList.ItemsSource = null;
-
+                    LoadActiveReservation();
+                    LoadFutureReservations();
+                    LoadPreviousReservations();
                 }
             }
         }
