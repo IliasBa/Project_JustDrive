@@ -153,10 +153,8 @@
                 <PasswordBox x:Name="TxtPassword" Style="{StaticResource InputPassword}" FontSize="20" Foreground="Black"/>
 
                 <!-- Wachtwoord vergeten -->
-                <TextBlock Text="Wachtwoord vergeten?" FontSize="13"
-                           Foreground="{StaticResource TextMuted}"
-                           HorizontalAlignment="Center" Margin="0,0,0,16"
-                           Cursor="Hand"/>
+                <Button Content="Wachtwoord vergeten?" Style="{StaticResource SecondaryButton}"
+                    Margin="0,0,0,16" Click="WachtwoordVergeten_Click"/>
 
                 <!-- Inloggen -->
                 <Button Content="Inloggen" Style="{StaticResource PrimaryButton}"
