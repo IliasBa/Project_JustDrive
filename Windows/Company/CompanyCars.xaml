@@ -172,11 +172,16 @@
                             <DataGridTextColumn Header="Transmissie" Binding="{Binding Transmission}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Prijs/dag" Binding="{Binding PricePerDay, StringFormat='€{0}'}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Borg" Binding="{Binding Deposit, StringFormat='€{0}'}" Width="*" IsReadOnly="True"/>
-                            <DataGridTemplateColumn Header="Acties" Width="120">
+                            <DataGridTemplateColumn Header="Acties" Width="180">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Verwijderen" Style="{StaticResource DangerButton}"
-                                                Click="Verwijderen_Click"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Content="Bewerken" Style="{StaticResource PrimaryButton}"
+                                                Padding="12,8" Margin="0,0,8,0"
+                                                Click="Bewerken_Click"/>
+                                            <Button Content="Verwijderen" Style="{StaticResource DangerButton}"
+                                                    Click="Verwijderen_Click"/>
+                                        </StackPanel>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

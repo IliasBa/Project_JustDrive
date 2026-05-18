@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using Project_JustDrive.Services;
 
 namespace Project_JustDrive.Windows.Clients
 {
@@ -18,6 +19,10 @@ namespace Project_JustDrive.Windows.Clients
             InitializeComponent();
             _userId = userId;
             LoadFavorieten();
+
+            txtProfileInitials.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
+            txtProfileName.Text = $"{Session.CurrentCustomer.FirstName} {Session.CurrentCustomer.LastName}";
+            txtProfileEmail.Text = Session.CurrentUser.Email;
         }
 
         private void LoadFavorieten()
@@ -41,12 +46,13 @@ namespace Project_JustDrive.Windows.Clients
                     _favorieten.Add(new Car
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        CarBrand = reader["Brand"].ToString(),  // ← was Car_Brand
-                        Model = reader["Model"].ToString(),     // ← add this
+                        CarBrand = reader["Brand"].ToString(),  
+                        Model = reader["Model"].ToString(),     
                         Type = reader["TYPE"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         Fuel = reader["Fuel"].ToString(),
-                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"])
+                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
+                        ImagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString()
                     });
                 }
             }

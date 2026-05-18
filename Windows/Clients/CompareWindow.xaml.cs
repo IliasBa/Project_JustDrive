@@ -51,35 +51,64 @@ namespace Project_JustDrive.Windows.Clients
             foreach (var car in cars)
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
 
-            // Rows
+            // Image row first
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(160) });
+
+            // Data rows
             var labels = new[]
             {
-                "Auto", "Prijs / dag", "Borg", "Brandstof",
-                "Transmissie", "Type", "Verbruik", "Locatie"
-            };
+        "Auto", "Prijs / dag", "Borg", "Brandstof",
+        "Transmissie", "Type", "Verbruik", "Locatie"
+    };
 
             foreach (var label in labels)
                 grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(52) });
 
-            // Header row — car names
-            AddCell(grid, "", 0, 0, true);
+            // Add image row
+            AddLabel(grid, "", 0, 0);
+            for (int col = 0; col < cars.Count; col++)
+            {
+                var image = new Image
+                {
+                    Source = cars[col].CarImage,
+                    Stretch = System.Windows.Media.Stretch.UniformToFill,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+
+                var border = new Border
+                {
+                    Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1F2937")),
+                    CornerRadius = new CornerRadius(8),
+                    ClipToBounds = true,
+                    Margin = new Thickness(8),
+                    Child = image
+                };
+
+                Grid.SetRow(border, 0);
+                Grid.SetColumn(border, col + 1);
+                grid.Children.Add(border);
+            }
+
+            // Header row — car names (now row 1)
+            AddCell(grid, "", 1, 0, true);
             for (int i = 0; i < cars.Count; i++)
-                AddCell(grid, $"{cars[i].CarBrand} {cars[i].Model}", 0, i + 1, true);
+                AddCell(grid, $"{cars[i].CarBrand} {cars[i].Model}", 1, i + 1, true);
 
             // Data rows
             var rows = new[]
             {
-                cars.ConvertAll(c => $"{c.CarBrand} {c.Model}"),
-                cars.ConvertAll(c => $"€ {c.PricePerDay}"),
-                cars.ConvertAll(c => $"€ {c.Deposit}"),
-                cars.ConvertAll(c => c.Fuel),
-                cars.ConvertAll(c => c.Transmission),
-                cars.ConvertAll(c => c.Type),
-                cars.ConvertAll(c => $"{c.PricePerKm} L/100km"),
-                cars.ConvertAll(c => c.City)
-            };
+        cars.ConvertAll(c => $"{c.CarBrand} {c.Model}"),
+        cars.ConvertAll(c => $"€ {c.PricePerDay}"),
+        cars.ConvertAll(c => $"€ {c.Deposit}"),
+        cars.ConvertAll(c => c.Fuel),
+        cars.ConvertAll(c => c.Transmission),
+        cars.ConvertAll(c => c.Type),
+        cars.ConvertAll(c => $"{c.PricePerKm} L/100km"),
+        cars.ConvertAll(c => c.City)
+    };
 
-            // Find cheapest car index
+            // Find cheapest
             int cheapestIndex = 0;
             decimal lowestPrice = cars[0].PricePerDay;
             for (int i = 1; i < cars.Count; i++)
@@ -93,19 +122,18 @@ namespace Project_JustDrive.Windows.Clients
 
             for (int row = 0; row < labels.Length; row++)
             {
-                AddLabel(grid, labels[row], row, 0);
+                AddLabel(grid, labels[row], row + 1, 0);  // ← +1 for image row
 
                 for (int col = 0; col < cars.Count; col++)
                 {
-                    // Highlight cheapest price in green
                     bool isGreen = row == 1 && col == cheapestIndex;
-                    AddCell(grid, rows[row][col], row, col + 1, false, row % 2 == 0, isGreen);
+                    AddCell(grid, rows[row][col], row + 1, col + 1, false, row % 2 == 0, isGreen); // ← +1
                 }
             }
 
-            // Add button row
+            // Button row
             grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(60) });
-            int buttonRow = labels.Length;
+            int buttonRow = labels.Length + 1; // ← +1 for image row
 
             AddLabel(grid, "", buttonRow, 0);
 

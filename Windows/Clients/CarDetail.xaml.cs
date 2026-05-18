@@ -1,8 +1,10 @@
 ﻿using JustDrive.Database;
 using MySql.Data.MySqlClient;
+using Project_JustDrive.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Project_JustDrive.Windows.Clients
 {
@@ -11,6 +13,7 @@ namespace Project_JustDrive.Windows.Clients
         private int _carId;
         private int _userId;
         private decimal _pricePerDay;
+        private string _imagePath;
 
         public CarDetail(int carId, int userId)
         {
@@ -24,6 +27,7 @@ namespace Project_JustDrive.Windows.Clients
             DpEnd.SelectedDateChanged += DateChanged;
 
             BlockBookedDates();
+            this.Loaded += CarDetail_Loaded;
         }
 
         private void LoadCarDetails()
@@ -50,6 +54,22 @@ namespace Project_JustDrive.Windows.Clients
                     TxtVerbruik.Text = reader["Price_Per_100km"] + " L/100km";
                     TxtNummerplaat.Text = reader["LicensePlate"].ToString();
                     TxtPrijs.Text = "€" + _pricePerDay;
+
+                    _imagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString();
+                }
+            }
+        }
+        private void CarDetail_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(_imagePath))
+            {
+                try
+                {
+                    ImgCar.Source = ImageHelper.LoadImage(_imagePath);
+                }
+                catch
+                {
+                    ImgCar.Source = null;
                 }
             }
         }
@@ -58,7 +78,6 @@ namespace Project_JustDrive.Windows.Clients
         {
             if (DpStart.SelectedDate != null)
             {
-                // End date must be after start date
                 DpEnd.DisplayDateStart = DpStart.SelectedDate.Value.AddDays(1);
             }
 
@@ -91,7 +110,7 @@ namespace Project_JustDrive.Windows.Clients
                 return;
             }
 
-            // ← Check if car is already booked
+            
             if (IsCarAlreadyBooked(DpStart.SelectedDate.Value, DpEnd.SelectedDate.Value))
             {
                 MessageBox.Show("Deze auto is al gereserveerd voor de geselecteerde periode.");

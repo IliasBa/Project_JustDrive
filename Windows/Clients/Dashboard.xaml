@@ -155,15 +155,6 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0" Background="#F5F6F8" CornerRadius="8" Padding="14,10" MaxWidth="700" HorizontalAlignment="Stretch">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="🔍" Foreground="{StaticResource TextMuted}" Margin="0,0,8,0"/>
-                            <TextBlock Text="Zoek naar reservaties... " Foreground="{StaticResource TextMuted}"/>
-                        </StackPanel>
-                    </Border>
-
-                    
                 </Grid>
             </Border>
 
@@ -181,53 +172,7 @@
                             <TextBlock x:Name="txtWelcome" Text="Welkom, " FontSize="28" FontWeight="Bold" Foreground="{StaticResource TextPrimary}"/>
                             <TextBlock Text="" Foreground="{StaticResource TextMuted}" Margin="0,4,0,0"/>
                         </StackPanel>
-                        <!--<Border Grid.Column="1" Background="White" CornerRadius="8" Padding="14,10" BorderBrush="{StaticResource BorderLight}" BorderThickness="1">
-                            --><!--<StackPanel>
-                                <TextBlock Text="Je hebt 1 actieve reservatie" FontSize="12" Foreground="{StaticResource TextPrimary}"/>
-                                <TextBlock Text="Je hebt 3 vorige reservaties" FontSize="12" Foreground="{StaticResource TextPrimary}"/>
-                            </StackPanel>--><!--
-                        </Border>-->
                     </Grid>
-
-                    <!-- Active reservation card -->
-                    <!--<Border Style="{StaticResource Card}" Margin="0,0,0,20">
-                        <StackPanel>
-                            <TextBlock Text="Actieve reservatie" FontWeight="Bold" FontSize="16" 
-                   Foreground="{StaticResource TextPrimary}" Margin="0,0,0,16"/>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Border Grid.Column="0" Width="140" Height="90" CornerRadius="8" Background="#1F2937"/>
-
-                                <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
-                                    <TextBlock x:Name="txtActiveCarName" FontSize="20" FontWeight="SemiBold" 
-                           Foreground="{StaticResource TextPrimary}"/>
-                                    <TextBlock x:Name="txtActiveDateRange" Foreground="{StaticResource TextMuted}" 
-                           Margin="0,4,0,0"/>
-                                </StackPanel>
-
-                                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <TextBlock x:Name="txtActivePrice" FontSize="20" FontWeight="Bold" 
-                               Foreground="{StaticResource TextPrimary}"/>
-                                        <TextBlock Text=" / dag" Foreground="{StaticResource TextMuted}" 
-                               VerticalAlignment="Bottom" Margin="2,0,0,2"/>
-                                    </StackPanel>
-                                    <Button Content="Bekijk details" Style="{StaticResource PrimaryButton}" 
-                        Margin="0,10,0,0" Click="BekijkDetails_Click"/>
-                                    <Button Content="Schade melden"
-                                        Style="{StaticResource PrimaryButton}"
-                                        Margin="0,10,0,0"
-                                        Click="SchadeMelden_Click"/>
-                                </StackPanel>
-                            </Grid>
-                        </StackPanel>
-                    </Border>-->
-
                     <Border Style="{StaticResource Card}" Margin="0,0,0,20">
                         <StackPanel>
                             <TextBlock Text="Actieve reservatie" FontWeight="Bold" FontSize="16" 
@@ -239,7 +184,11 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Border Grid.Column="0" Width="140" Height="90" CornerRadius="8" Background="#1F2937"/>
+                                <Border Grid.Column="0" Width="140" Height="90" CornerRadius="8" 
+                                            Background="#1F2937" ClipToBounds="True">
+                                    <Image x:Name="ImgActivecar" Stretch="UniformToFill"
+                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Border>
 
                                 <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
                                     <TextBlock x:Name="txtActiveCarName" FontSize="20" FontWeight="SemiBold" 
@@ -286,7 +235,11 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Border Grid.Column="0" Width="100" Height="70" 
-                                CornerRadius="8" Background="LightGray"/>
+                                                CornerRadius="8" Background="#1F2937"
+                                                         ClipToBounds="True">
+                                                <Image Source="{Binding CarImage}" Stretch="UniformToFill"
+                                                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Border>
 
                                             <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding CarName}" FontSize="16" 
@@ -339,7 +292,11 @@
                                             </Grid.ColumnDefinitions>
 
                                             <Border Grid.Column="0" Width="100" Height="70" 
-                                CornerRadius="8" Background="LightGray"/>
+                                                     CornerRadius="8" Background="#1F2937"
+                                                             ClipToBounds="True">
+                                                <Image Source="{Binding CarImage}" Stretch="UniformToFill"
+                                                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                            </Border>
 
                                             <StackPanel Grid.Column="1" Margin="20,0,0,0" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding CarName}" FontSize="16" 

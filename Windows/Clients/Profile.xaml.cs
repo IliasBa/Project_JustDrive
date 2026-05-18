@@ -125,7 +125,6 @@ namespace Project_JustDrive.Windows.Clients
                     Session.CurrentUser.City = txtCity.Text;
 
                     MessageBox.Show("Profiel succesvol opgeslagen!");
-                    this.Close();
                 }
             }
             catch (Exception ex)

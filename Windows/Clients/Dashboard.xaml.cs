@@ -1,9 +1,10 @@
 ﻿using Project_JustDrive;
+using Project_JustDrive.Models;
 using Project_JustDrive.Services;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 using static Project_JustDrive.Services.ReservationService;
-using Project_JustDrive.Models;
 
 
 namespace Project_JustDrive.Windows.Clients
@@ -70,6 +71,7 @@ namespace Project_JustDrive.Windows.Clients
                 CarId = r.CarId,
                 CarName = $"{r.CarBrand} {r.CarModel}",
                 PricePerDayFormatted = $"€ {r.PricePerDay}",
+                ImagePath = r.ImagePath,
                 StartDate = r.StartDate,
                 EndDate = r.EndDate
             }).ToList();
@@ -104,7 +106,19 @@ namespace Project_JustDrive.Windows.Clients
                 txtActiveDateRange.Text = $"{active.StartDate:dd/MM/yyyy} - {active.EndDate:dd/MM/yyyy}";
                 txtActivePrice.Text = $"€ {active.PricePerDay}";
                 gridActiveReservation.Visibility = Visibility.Visible;
-                stackNoActive.Visibility = Visibility.Collapsed; 
+                stackNoActive.Visibility = Visibility.Collapsed;
+
+                if (!string.IsNullOrEmpty(active.ImagePath))
+                {
+                    try
+                    {
+                        ImgActivecar.Source = ImageHelper.LoadImage(active.ImagePath);
+                    }
+                    catch
+                    {
+                        ImgActivecar.Source = null;
+                    }
+                }
             }
             else
             {
@@ -130,6 +144,7 @@ namespace Project_JustDrive.Windows.Clients
                     ReservationId = r.Id,
                     CarName = $"{r.CarBrand} {r.CarModel}",
                     Price = $"€ {r.PricePerDay}",
+                    ImagePath = r.ImagePath,
                     StartDate = r.StartDate,
                     EndDate = r.EndDate
                 }).ToList();

@@ -1,14 +1,20 @@
 ﻿using JustDrive.Database;
+using Microsoft.Win32;
 using MySql.Data.MySqlClient;
 using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace Project_JustDrive.Windows.Company
 {
     public partial class AddCar : Window
     {
         private int _userId;
+        private string _selectedImagePath;
+        private string _selectedBrand;
+        private string _selectedModel;
 
         public AddCar(int userId)
         {
@@ -50,6 +56,11 @@ namespace Project_JustDrive.Windows.Company
         {
             if (CmbMerk.SelectedItem != null)
                 LoadModels(CmbMerk.SelectedItem.ToString());
+        }
+        private void CmbModel_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CmbModel.SelectedItem != null)
+                _selectedModel = CmbModel.SelectedItem.ToString();
         }
 
         private void BtnNieuwMerk_Click(object sender, RoutedEventArgs e)
@@ -106,6 +117,42 @@ namespace Project_JustDrive.Windows.Company
             return Convert.ToInt32(insertCmd.LastInsertedId);
         }
 
+        private void BtnFotoKiezen_Click(object sender, RoutedEventArgs e)
+        {
+            if (CmbMerk.SelectedItem == null || CmbModel.SelectedItem == null)
+            {
+                MessageBox.Show("Kies eerst een merk en model.");
+                return;
+            }
+
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = "Image files (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png"
+            };
+
+            if (dialog.ShowDialog() == true)
+            {
+                string brand = CmbMerk.SelectedItem.ToString();
+                string model = CmbModel.SelectedItem.ToString().Replace(" ", "_");
+                string fileName = $"{brand}_{model}.jpg";
+
+                // Save to project Images folder
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string projectDir = System.IO.Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
+                string imagesFolder = System.IO.Path.Combine(projectDir, "Images");
+
+                System.IO.Directory.CreateDirectory(imagesFolder);
+                string destinationPath = System.IO.Path.Combine(imagesFolder, fileName);
+
+                System.IO.File.Copy(dialog.FileName, destinationPath, true);
+
+                _selectedImagePath = $"pack://application:,,,/Images/{fileName}";
+
+                // Use file path for preview
+                ImgPreview.Source = new BitmapImage(new Uri(destinationPath));
+            }
+        }
+
         private void BtnOpslaan_Click(object sender, RoutedEventArgs e)
         {
             if (CmbMerk.SelectedItem == null || CmbModel.SelectedItem == null ||
@@ -136,11 +183,13 @@ namespace Project_JustDrive.Windows.Company
                         CmbModel.SelectedItem.ToString());
 
                     string query = @"INSERT INTO car 
-                                    (CarNameId, TYPE, Fuel, Transmission, 
-                                     Price_Per_Day, Deposit, Price_Per_100km, LicensePlate, CompanyId)
-                                    VALUES 
+                                (CarNameId, TYPE, Fuel, Transmission, 
+                                Price_Per_Day, Deposit, Price_Per_100km, LicensePlate, CompanyId, Image_Path)
+                                     VALUES 
                                     (@carNameId, @type, @brandstof, @transmissie,
-                                     @prijs, @borg, @verbruik, @nummerplaat, @companyId)";
+                                     @prijs, @borg, @verbruik, @nummerplaat, @companyId, @imagePath)";
+
+                    
 
                     var cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@carNameId", carNameId);
@@ -152,6 +201,7 @@ namespace Project_JustDrive.Windows.Company
                     cmd.Parameters.AddWithValue("@verbruik", verbruik);
                     cmd.Parameters.AddWithValue("@nummerplaat", TxtNummerplaat.Text);
                     cmd.Parameters.AddWithValue("@companyId", _userId);
+                    cmd.Parameters.AddWithValue("@imagePath", _selectedImagePath ?? (object)DBNull.Value);
                     cmd.ExecuteNonQuery();
 
                     MessageBox.Show("Auto succesvol toegevoegd!");

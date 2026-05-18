@@ -45,7 +45,8 @@ namespace Project_JustDrive.Windows.Company
                         Fuel = reader["Fuel"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
-                        Deposit = Convert.ToDecimal(reader["Deposit"])
+                        Deposit = Convert.ToDecimal(reader["Deposit"]),
+                        LicensePlate = reader["LicensePlate"].ToString()
                     });
                 }
             }
@@ -109,6 +110,16 @@ namespace Project_JustDrive.Windows.Company
             CompanyDamageReports damage = new CompanyDamageReports(_userId);
             damage.Show();
             this.Close();
+        }
+
+        private void Bewerken_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            Car auto = btn.DataContext as Car;
+
+            EditCar editCar = new EditCar(auto, _userId);
+            editCar.ShowDialog();
+            LoadCars();
         }
 
         private void Uitloggen_Click(object sender, RoutedEventArgs e)

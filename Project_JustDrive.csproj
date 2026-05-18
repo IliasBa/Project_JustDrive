@@ -9,7 +9,40 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Images\Volkswagen-Polo.jpg" />
+    <None Remove="Images\Audi_A3.jpg" />
+    <None Remove="Images\Audi_Q3.jpg" />
+    <None Remove="Images\BMW_1_Series.jpg" />
+    <None Remove="Images\BMW_3_Series.jpg" />
+    <None Remove="Images\Citroën_Berlingo.jpg" />
+    <None Remove="Images\Citroën_C3.jpg" />
+    <None Remove="Images\Citroën_C5_X.jpg" />
+    <None Remove="Images\Ford_Focus.jpg" />
+    <None Remove="Images\Ford_Puma.jpg" />
+    <None Remove="Images\Ford_Tourneo_Connect.jpg" />
+    <None Remove="Images\Hyundai_i30.jpg" />
+    <None Remove="Images\Hyundai_Tucson.jpg" />
+    <None Remove="Images\Kia_Ceed.jpg" />
+    <None Remove="Images\Mercedes-Benz_A-Class.jpg" />
+    <None Remove="Images\Mercedes-Benz_GLC.jpg" />
+    <None Remove="Images\Opel_Astra.jpg" />
+    <None Remove="Images\Opel_Corsa.jpg" />
+    <None Remove="Images\Opel_Mokka.jpg" />
+    <None Remove="Images\Opel_Zafira.jpg" />
+    <None Remove="Images\Peugeot_208.jpg" />
+    <None Remove="Images\Peugeot_3008.jpg" />
+    <None Remove="Images\Porsche_Cayenne.jpg" />
+    <None Remove="Images\Renault_Clio.jpg" />
+    <None Remove="Images\Renault_Kangoo.jpg" />
+    <None Remove="Images\Renault_Megane.jpg" />
+    <None Remove="Images\Renault_Zoe.jpg" />
+    <None Remove="Images\Tesla_Model_3.jpg" />
+    <None Remove="Images\Toyota_Corolla.jpg" />
+    <None Remove="Images\Toyota_RAV4.jpg" />
+    <None Remove="Images\Toyota_Yaris.jpg" />
+    <None Remove="Images\Volkswagen_Caddy.jpg" />
+    <None Remove="Images\Volkswagen_Golf.jpg" />
+    <None Remove="Images\Volkswagen_Polo.jpg" />
+    <None Remove="Images\Volkswagen_Tiguan.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -18,7 +51,108 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\Volkswagen-Polo.jpg" />
+    <Resource Include="Images\Audi_A3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Audi_Q3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BMW_1_Series.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\BMW_3_Series.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Citroën_Berlingo.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Citroën_C3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Citroën_C5_X.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Ford_Focus.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Ford_Puma.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Ford_Tourneo_Connect.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Hyundai_i30.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Hyundai_Tucson.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Kia_Ceed.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Mercedes-Benz_A-Class.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Mercedes-Benz_GLC.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Opel_Astra.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Opel_Corsa.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Opel_Mokka.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Opel_Zafira.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Peugeot_208.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Peugeot_3008.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Porsche_Cayenne.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Renault_Clio.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Renault_Kangoo.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Renault_Megane.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Renault_Zoe.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Tesla_Model_3.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Toyota_Corolla.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Toyota_RAV4.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Toyota_Yaris.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Volkswagen_Caddy.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Volkswagen_Golf.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Volkswagen_Polo.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Images\Volkswagen_Tiguan.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Project_JustDrive.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace Project_JustDrive.Models
 {
@@ -19,5 +21,7 @@ namespace Project_JustDrive.Models
         public string Type { get; set; }
         public string LicensePlate { get; set; }
         public string? ImagePath { get; set; }
+
+        public BitmapImage CarImage => ImageHelper.LoadImage(ImagePath);
     }
 }

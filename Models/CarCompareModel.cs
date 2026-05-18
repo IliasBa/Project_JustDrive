@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Project_JustDrive.Services;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace Project_JustDrive.Models
 {
@@ -16,5 +18,9 @@ namespace Project_JustDrive.Models
         public decimal Deposit { get; set; }
         public decimal PricePerKm { get; set; }
         public string City { get; set; }
+        public string ImagePath { get; set; } 
+
+        public BitmapImage CarImage => ImageHelper.LoadImage(ImagePath);
+
     }
 }

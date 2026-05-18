@@ -112,12 +112,12 @@
                     <Border Background="{StaticResource SidebarBgAlt}" CornerRadius="10" Padding="12" Margin="0,0,0,8">
                         <StackPanel Orientation="Horizontal">
                             <Border Width="36" Height="36" CornerRadius="18" Background="{StaticResource Accent}">
-                                <TextBlock Text="Y" Foreground="White" FontWeight="Bold"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock x:Name="txtProfileInitials" Text="" Foreground="White" FontWeight="Bold"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                <TextBlock Text="Younes" Foreground="White" FontWeight="SemiBold"/>
-                                <TextBlock Text="younes@gmail.com" Foreground="#8A95A8" FontSize="11"/>
+                                <TextBlock x:Name="txtProfileName" Text="" Foreground="White" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="txtProfileEmail" Text="" Foreground="#8A95A8" FontSize="11"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -159,9 +159,14 @@
                             <DataTemplate>
                                 <Border Style="{StaticResource Card}" Margin="0,0,20,20">
                                     <StackPanel>
-                                        <Border Height="180" Background="#1F2937" CornerRadius="12,12,0,0"/>
+                                        <Border Height="180" Background="#1F2937" CornerRadius="12,12,0,0"
+                                                ClipToBounds="True">
+                                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
+                                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        </Border>
                                         <StackPanel Margin="20">
                                             <TextBlock Text="{Binding CarBrand}" FontSize="18" FontWeight="Bold"/>
+                                            <TextBlock Text="{Binding Model}" FontSize="18" FontWeight="Bold"/>
                                             <TextBlock Text="{Binding Type}" Foreground="Gray" Margin="0,2,0,10"/>
                                             <TextBlock Text="{Binding Transmission}"/>
                                             <TextBlock Text="{Binding Fuel}"/>
