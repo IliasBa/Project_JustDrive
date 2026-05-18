@@ -120,7 +120,7 @@ namespace Project_JustDrive
                     }
                     else
                     {
-                        MessageBox.Show(PasswordHelper.Hash("Test1234"));
+                        
                         MessageBox.Show("Email of wachtwoord is fout.");
                     }
                 }
@@ -135,6 +135,13 @@ namespace Project_JustDrive
         {
             Registreren register = new Registreren();
             register.Show();
+            this.Close();
+        }
+
+        private void WachtwoordVergeten_Click(object sender, RoutedEventArgs e)
+        {
+            ForgotPassword forgot = new ForgotPassword();
+            forgot.Show();
             this.Close();
         }
     }

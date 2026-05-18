@@ -45,6 +45,18 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
         </Style>
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="16" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid>
@@ -68,15 +80,11 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">
-                    <Button Style="{StaticResource NavButton}" Content="🏠   Dashboard"
-                            Click="Dashboard_Click"/>
-                    <Button Style="{StaticResource NavButton}" Content="🚗   Mijn auto's"
-                            Click="MijnAutos_Click"/>
+                    <Button Style="{StaticResource NavButton}" Content="🏠   Dashboard" Click="Dashboard_Click"/>
+                    <Button Style="{StaticResource NavButton}" Content="🚗   Mijn auto's" Click="MijnAutos_Click"/>
                     <Button Style="{StaticResource NavButtonActive}" Content="📅   Reservaties"/>
-                    <Button Style="{StaticResource NavButton}" Content="👥   Klanten"
-                            Click="Klanten_Click"/>
-                    <Button Style="{StaticResource NavButton}" Content="🔧   Schaderapport"
-                            Click="Schade_Click"/>
+                    <Button Style="{StaticResource NavButton}" Content="👥   Klanten" Click="Klanten_Click"/>
+                    <Button Style="{StaticResource NavButton}" Content="🔧   Schaderapport" Click="Schade_Click"/>
                 </StackPanel>
 
                 <StackPanel Grid.Row="2" Margin="12,0,12,16">
@@ -90,35 +98,159 @@
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
+            <!-- Top bar -->
             <Border Grid.Row="0" Background="White" Padding="32,18"
                     BorderBrush="{StaticResource BorderLight}" BorderThickness="0,0,0,1">
-                <TextBlock Text="Reservaties" FontSize="22" FontWeight="Bold"
-                           Foreground="{StaticResource TextPrimary}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Reservaties" FontSize="22" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock x:Name="TxtAantal" FontSize="13"
+                                   Foreground="{StaticResource TextMuted}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                </Grid>
             </Border>
 
-            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="32,28">
+            <!-- Statistieken -->
+            <Grid Grid.Row="1" Margin="32,20,32,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                    <DataGrid x:Name="ReservationsGrid" AutoGenerateColumns="False"
-                              IsReadOnly="True" GridLinesVisibility="Horizontal"
-                              BorderThickness="0" Background="White"
-                              RowBackground="Transparent" AlternatingRowBackground="#F9FAFB"
-                              HeadersVisibility="Column" CanUserDeleteRows="False"
-                              CanUserAddRows="False">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Klant" Binding="{Binding KlantNaam}" Width="*"/>
-                            <DataGridTextColumn Header="Auto" Binding="{Binding AutoNaam}" Width="*"/>
-                            <DataGridTextColumn Header="Van" Binding="{Binding StartDate}" Width="*"/>
-                            <DataGridTextColumn Header="Tot" Binding="{Binding EndDate}" Width="*"/>
-                            <DataGridTextColumn Header="Totaal" Binding="{Binding TotalPrice, StringFormat='€{0}'}" Width="*"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="*"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                <Border Grid.Column="0" Background="White" CornerRadius="12" Padding="20" Margin="0,0,12,0">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="16" ShadowDepth="2"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="Totaal" Foreground="{StaticResource TextMuted}" FontSize="13"/>
+                        <TextBlock x:Name="TxtTotaal" FontSize="28" FontWeight="Bold"
+                                   Foreground="{StaticResource TextPrimary}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
 
-                </StackPanel>
+                <Border Grid.Column="1" Background="White" CornerRadius="12" Padding="20" Margin="0,0,12,0">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="16" ShadowDepth="2"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="Actief" Foreground="{StaticResource TextMuted}" FontSize="13"/>
+                        <TextBlock x:Name="TxtActief" FontSize="28" FontWeight="Bold"
+                                   Foreground="{StaticResource Accent}" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="2" Background="White" CornerRadius="12" Padding="20">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="16" ShadowDepth="2"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <TextBlock Text="Afgerond" Foreground="{StaticResource TextMuted}" FontSize="13"/>
+                        <TextBlock x:Name="TxtAfgerond" FontSize="28" FontWeight="Bold"
+                                   Foreground="#10B981" Margin="0,4,0,0"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <!-- Reservatie kaarten -->
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="32,20,32,20">
+                <ItemsControl x:Name="ReservationsPanel">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Style="{StaticResource CardStyle}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Icoon -->
+                                    <Border Grid.Column="0" Width="45" Height="45" CornerRadius="10"
+                                            Background="#FFF5F0" Margin="0,0,16,0">
+                                        <TextBlock Text="📅" FontSize="20"
+                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <!-- Klant -->
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                        <TextBlock Text="Klant" FontSize="11"
+                                                   Foreground="{StaticResource TextMuted}"/>
+                                        <TextBlock Text="{Binding KlantNaam}" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
+                                    </StackPanel>
+
+                                    <!-- Auto -->
+                                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                                        <TextBlock Text="Auto" FontSize="11"
+                                                   Foreground="{StaticResource TextMuted}"/>
+                                        <TextBlock Text="{Binding AutoNaam}" FontSize="14"
+                                                   FontWeight="SemiBold" Foreground="{StaticResource TextPrimary}"/>
+                                    </StackPanel>
+
+                                    <!-- Datum -->
+                                    <StackPanel Grid.Column="3" VerticalAlignment="Center">
+                                        <TextBlock Text="Periode" FontSize="11"
+                                                   Foreground="{StaticResource TextMuted}"/>
+                                        <TextBlock FontSize="13" Foreground="{StaticResource TextPrimary}">
+                                            <Run Text="{Binding StartDate}"/>
+                                            <Run Text=" → "/>
+                                            <Run Text="{Binding EndDate}"/>
+                                        </TextBlock>
+                                    </StackPanel>
+
+                                    <!-- Prijs -->
+                                    <StackPanel Grid.Column="4" VerticalAlignment="Center" Margin="16,0">
+                                        <TextBlock Text="Totaal" FontSize="11"
+                                                   Foreground="{StaticResource TextMuted}"/>
+                                        <TextBlock Text="{Binding TotalPrice, StringFormat='€{0}'}"
+                                                   FontSize="16" FontWeight="Bold"
+                                                   Foreground="{StaticResource TextPrimary}"/>
+                                    </StackPanel>
+
+                                    <!-- Status badge -->
+                                    <Border Grid.Column="5" CornerRadius="20" Padding="12,6"
+                                            VerticalAlignment="Center">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="Background" Value="#D1FAE5"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Status}" Value="Actief">
+                                                        <Setter Property="Background" Value="#FFF5F0"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding Status}" FontSize="12" FontWeight="SemiBold">
+                                            <TextBlock.Style>
+                                                <Style TargetType="TextBlock">
+                                                    <Setter Property="Foreground" Value="#065F46"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Status}" Value="Actief">
+                                                            <Setter Property="Foreground" Value="#F26B1F"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </TextBlock.Style>
+                                        </TextBlock>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
             </ScrollViewer>
         </Grid>
     </Grid>

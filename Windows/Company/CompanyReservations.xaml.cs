@@ -20,19 +20,19 @@ namespace Project_JustDrive.Windows.Company
         private void LoadReservations()
         {
             var reservations = new List<dynamic>();
+            int actief = 0, afgerond = 0;
 
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
                 string query = @"SELECT 
                             CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
-                            CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
+                            CONCAT(c.Car_Brand, ' ', c.Model) AS AutoNaam,
                             r.Start_date AS StartDate,
                             r.End_date AS EndDate,
                             r.Total_price AS TotalPrice
                          FROM reservation r
                          INNER JOIN car c ON r.CarId = c.Id
-                         JOIN carname cn ON cn.Id = c.CarNameId
                          INNER JOIN customer cu ON r.CustomerId = cu.UserId
                          WHERE c.CompanyId = @id
                          ORDER BY r.Start_date DESC";
@@ -45,7 +45,10 @@ namespace Project_JustDrive.Windows.Company
                 {
                     DateTime startDate = Convert.ToDateTime(reader["StartDate"]);
                     DateTime endDate = Convert.ToDateTime(reader["EndDate"]);
-                    string status = endDate < DateTime.Now ? "Afgerond" : "Actief";
+                    string status = endDate >= DateTime.Now ? "Actief" : "Afgerond";
+
+                    if (status == "Actief") actief++;
+                    else afgerond++;
 
                     reservations.Add(new
                     {
@@ -59,8 +62,14 @@ namespace Project_JustDrive.Windows.Company
                 }
             }
 
-            ReservationsGrid.ItemsSource = reservations;
+            ReservationsPanel.ItemsSource = reservations;
+            TxtTotaal.Text = reservations.Count.ToString();
+            TxtActief.Text = actief.ToString();
+            TxtAfgerond.Text = afgerond.ToString();
+            TxtAantal.Text = $"{reservations.Count} reservaties gevonden";
         }
+
+
 
         private void Dashboard_Click(object sender, RoutedEventArgs e)
         {
