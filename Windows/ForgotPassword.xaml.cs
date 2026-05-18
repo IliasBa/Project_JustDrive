@@ -14,10 +14,10 @@ namespace Project_JustDrive.Windows
         private string _userEmail;
 
         // ⚠️ Vul later in met Combell gegevens
-        private const string SMTP_HOST = "smtp.gmail.com";
-        private const int SMTP_PORT = 465;
-        private const string SMTP_EMAIL = "iliasbaaouch@gmail.com";
-        private const string SMTP_PASSWORD = "ztez eiym kljr dtte";
+        private const string SMTP_HOST = "smtp-auth.mailprotect.be";
+        private const int SMTP_PORT = 587;
+        private const string SMTP_EMAIL = "no-reply@projectinspirationlab.com";
+        private const string SMTP_PASSWORD = "azertyno-reply2026?";
 
         public ForgotPassword()
         {
@@ -60,7 +60,7 @@ namespace Project_JustDrive.Windows
                     mail.Subject = "JustDrive - Verificatiecode";
                     mail.Body = $"Hallo,\n\nJe verificatiecode is: {_verificationCode}";
 
-                    var smtp = new SmtpClient("smtp.gmail.com", 587)
+                    var smtp = new SmtpClient(SMTP_HOST, SMTP_PORT)
                     {
                         Credentials = new NetworkCredential(SMTP_EMAIL, SMTP_PASSWORD),
                         EnableSsl = true
