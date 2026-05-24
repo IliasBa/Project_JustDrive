@@ -20,6 +20,11 @@ namespace Project_JustDrive.Windows.Clients
             txtProfileInitials.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
             txtProfileName.Text = $"{Session.CurrentCustomer.FirstName} {Session.CurrentCustomer.LastName}";
             txtProfileEmail.Text = Session.CurrentUser.Email;
+
+            // Header kaart
+            TxtAvatar.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
+            TxtFullName.Text = $"{Session.CurrentCustomer.FirstName} {Session.CurrentCustomer.LastName}";
+            TxtEmailHeader.Text = Session.CurrentUser.Email;
         }
 
         private void LoadProfileData()

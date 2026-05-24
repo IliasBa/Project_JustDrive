@@ -50,8 +50,9 @@
             <Setter Property="Background" Value="{StaticResource Accent}"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="Padding" Value="24,12"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -77,11 +78,40 @@
         </Style>
 
         <Style x:Key="FormInput" TargetType="TextBox">
-            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Padding" Value="12,0"/>
             <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#0F1B2D"/>
+            <Setter Property="Background" Value="#F9FAFB"/>
             <Setter Property="BorderBrush" Value="#E5E7EB"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,0,16"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="12"/>
+            <Setter Property="Padding" Value="28"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="20" ShadowDepth="2"/>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -91,7 +121,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- ============ SIDEBAR ============ -->
+        <!-- SIDEBAR -->
         <Border Grid.Column="0" Background="{StaticResource SidebarBg}">
             <Grid>
                 <Grid.RowDefinitions>
@@ -100,13 +130,11 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <!-- Logo -->
                 <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="24,28,0,32">
                     <TextBlock Text="Just Drive" Foreground="White" FontSize="22" FontWeight="Bold"/>
                     <TextBlock Text="." Foreground="{StaticResource Accent}" FontSize="22" FontWeight="Bold"/>
                 </StackPanel>
 
-                <!-- Navigation -->
                 <StackPanel Grid.Row="1">
                     <Button Style="{StaticResource NavButton}" Content="🏠   Home" Click="Home_Click"/>
                     <Button Style="{StaticResource NavButton}" Content="🚗   Huur auto" Click="HuurAuto_Click"/>
@@ -114,17 +142,16 @@
                     <Button Style="{StaticResource NavButtonActive}" Content="👤   Profiel"/>
                 </StackPanel>
 
-                <!-- User card + logout -->
                 <StackPanel Grid.Row="2" Margin="12,0,12,16">
                     <Border Background="{StaticResource SidebarBgAlt}" CornerRadius="10" Padding="12" Margin="0,0,0,8">
                         <StackPanel Orientation="Horizontal">
                             <Border Width="36" Height="36" CornerRadius="18" Background="{StaticResource Accent}">
-                                <TextBlock x:Name="txtProfileInitials" Text="" Foreground="White" FontWeight="Bold"
+                                <TextBlock x:Name="txtProfileInitials" Foreground="White" FontWeight="Bold"
                                            HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </Border>
                             <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
-                                <TextBlock x:Name="txtProfileName" Text="" Foreground="White" FontWeight="SemiBold"/>
-                                <TextBlock x:Name="txtProfileEmail" Text="" Foreground="#8A95A8" FontSize="11"/>
+                                <TextBlock x:Name="txtProfileName" Foreground="White" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="txtProfileEmail" Foreground="#8A95A8" FontSize="11"/>
                             </StackPanel>
                         </StackPanel>
                     </Border>
@@ -134,7 +161,7 @@
             </Grid>
         </Border>
 
-        <!-- ============ MAIN CONTENT ============ -->
+        <!-- MAIN CONTENT -->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -142,66 +169,115 @@
             </Grid.RowDefinitions>
 
             <!-- Top bar -->
-            <Border Grid.Row="0" Background="White" Padding="32,18" 
+            <Border Grid.Row="0" Background="White" Padding="32,18"
                     BorderBrush="{StaticResource BorderLight}" BorderThickness="0,0,0,1">
-                <TextBlock Text="Mijn profiel" FontSize="20" FontWeight="Bold" 
+                <TextBlock Text="Mijn profiel" FontSize="22" FontWeight="Bold"
                            Foreground="{StaticResource TextPrimary}"/>
             </Border>
 
-            <!-- Scrollable content -->
             <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                <StackPanel Margin="32,28" MaxWidth="600" HorizontalAlignment="Left">
+                <StackPanel Margin="32,28">
 
-                    <Border Background="White" CornerRadius="12" Padding="30,10">
-                        <StackPanel>
+                    <!-- Profiel header kaart -->
+                    <Border Style="{StaticResource Card}" Margin="0,0,0,24">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
 
-                            <!-- Name row -->
-                            <TextBlock Text="Voornaam" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtFirstName" Style="{StaticResource FormInput}"/>
-                                
-                            <TextBlock Text="Achternaam" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtLastName" Style="{StaticResource FormInput}"/>
-                                
-                            <!-- Email -->
-                            <TextBlock Text="Email" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtEmail" Style="{StaticResource FormInput}"/>
+                            <!-- Avatar -->
+                            <Border Width="80" Height="80" CornerRadius="40"
+                                    Background="{StaticResource Accent}" Margin="0,0,24,0">
+                                <TextBlock x:Name="TxtAvatar" FontSize="28" FontWeight="Bold"
+                                           Foreground="White" HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"/>
+                            </Border>
 
-                            <!-- Phone -->
-                            <TextBlock Text="Telefoonnummer" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtPhone" Style="{StaticResource FormInput}"/>
-
-
-
-                            <TextBlock Text="Adres" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtAdres" Style="{StaticResource FormInput}"/>
-
-                            <TextBlock Text="Postcode" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtPostcode" Style="{StaticResource FormInput}"/>
-
-                            <TextBlock Text="Stad" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtCity" Style="{StaticResource FormInput}"/>
-
-
-                            <!-- Birthday -->
-                            <TextBlock Text="Geboortedatum" Style="{StaticResource FormLabel}"/>
-                            <DatePicker x:Name="dpBirthday" Margin="0,0,0,16" Padding="10,8"  />
-
-                            <!-- Licence -->
-                            <TextBlock Text="Rijbewijsnummer" Style="{StaticResource FormLabel}"/>
-                            <TextBox x:Name="txtLicence" Style="{StaticResource FormInput}"/>
-
-                            <!-- Password -->
-                            <TextBlock Text="Nieuw wachtwoord (laat leeg om niet te wijzigen)" 
-                                       Style="{StaticResource FormLabel}"/>
-                            <PasswordBox x:Name="txtPassword" Padding="10,8" FontSize="14" 
-                                         BorderBrush="#E5E7EB" BorderThickness="1" Margin="0,0,0,24"/>
-
-                            <!-- Save button -->
-                            <Button Content="Opslaan" Style="{StaticResource PrimaryButton}"
-                                    HorizontalAlignment="Right" Click="Opslaan_Click"/>
-
-                        </StackPanel>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock x:Name="TxtFullName" FontSize="22" FontWeight="Bold"
+                                           Foreground="{StaticResource TextPrimary}"/>
+                                <TextBlock x:Name="TxtEmailHeader" FontSize="14"
+                                           Foreground="{StaticResource TextMuted}" Margin="0,4,0,0"/>
+                            </StackPanel>
+                        </Grid>
                     </Border>
+
+                    <!-- Formulier in twee kolommen -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="24"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Linker kolom -->
+                        <Border Grid.Column="0" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <TextBlock Text="Persoonlijke gegevens" FontSize="16" FontWeight="Bold"
+                                           Foreground="{StaticResource TextPrimary}" Margin="0,0,0,20"/>
+
+                                <TextBlock Text="Voornaam" Style="{StaticResource FormLabel}"/>
+                                <TextBox x:Name="txtFirstName" Style="{StaticResource FormInput}"/>
+
+                                <TextBlock Text="Achternaam" Style="{StaticResource FormLabel}"/>
+                                <TextBox x:Name="txtLastName" Style="{StaticResource FormInput}"/>
+
+                                <TextBlock Text="Geboortedatum" Style="{StaticResource FormLabel}"/>
+                                <DatePicker x:Name="dpBirthday" Height="40" Margin="0,0,0,16"/>
+
+                                <TextBlock Text="Rijbewijsnummer" Style="{StaticResource FormLabel}"/>
+                                <TextBox x:Name="txtLicence" Style="{StaticResource FormInput}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Rechter kolom -->
+                        <Border Grid.Column="2" Style="{StaticResource Card}">
+                            <StackPanel>
+                                <TextBlock Text="Contact &amp; beveiliging" FontSize="16" FontWeight="Bold"
+                                           Foreground="{StaticResource TextPrimary}" Margin="0,0,0,20"/>
+
+                                <TextBlock Text="Email" Style="{StaticResource FormLabel}"/>
+                                <TextBox x:Name="txtEmail" Style="{StaticResource FormInput}"/>
+
+                                <TextBlock Text="Telefoonnummer" Style="{StaticResource FormLabel}"/>
+                                <TextBox x:Name="txtPhone" Style="{StaticResource FormInput}"/>
+
+                                <TextBlock Text="Adres" Style="{StaticResource FormLabel}"/>
+                                <TextBox x:Name="txtAdres" Style="{StaticResource FormInput}"/>
+
+                                <Grid Margin="0,0,0,16">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="12"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Grid.Column="0">
+                                        <TextBlock Text="Postcode" Style="{StaticResource FormLabel}"/>
+                                        <TextBox x:Name="txtPostcode" Style="{StaticResource FormInput}"
+                                                 Margin="0"/>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock Text="Stad" Style="{StaticResource FormLabel}"/>
+                                        <TextBox x:Name="txtCity" Style="{StaticResource FormInput}"
+                                                 Margin="0"/>
+                                    </StackPanel>
+                                </Grid>
+
+                                <TextBlock Text="Nieuw wachtwoord (laat leeg om niet te wijzigen)"
+                                           Style="{StaticResource FormLabel}"/>
+                                <PasswordBox x:Name="txtPassword" Height="40" Padding="12,0"
+                                             FontSize="14" BorderBrush="#E5E7EB" BorderThickness="1"
+                                             Background="#F9FAFB" Margin="0,0,0,0"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- Opslaan knop -->
+                    <Button Content="Wijzigingen opslaan" Style="{StaticResource PrimaryButton}"
+                            HorizontalAlignment="Right" Margin="0,20,0,0"
+                            Click="Opslaan_Click"/>
+
                 </StackPanel>
             </ScrollViewer>
         </Grid>

@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using Project_JustDrive.Models;
 using Project_JustDrive.Services;
 using Project_JustDrive.Windows;
+using Project_JustDrive.Windows.Admin;
 using Project_JustDrive.Windows.Company;
 using System;
 using System.Windows;
@@ -115,7 +116,9 @@ namespace Project_JustDrive
                         }
                         else if (role == "admin")
                         {
-                            MessageBox.Show("Admin dashboard komt binnenkort!");
+                            AdminDashboard adminDashboard = new AdminDashboard(userId);
+                            adminDashboard.Show();
+                            this.Close();
                         }
                     }
                     else
