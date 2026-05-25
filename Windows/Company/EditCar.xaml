@@ -91,6 +91,8 @@
                         <ComboBoxItem Content="Sedan"/>
                         <ComboBoxItem Content="SUV"/>
                         <ComboBoxItem Content="Minivan"/>
+                        <ComboBoxItem Content="Sport"/>
+
                     </ComboBox>
 
                     <TextBlock Text="Brandstof" Style="{StaticResource InputLabel}"/>

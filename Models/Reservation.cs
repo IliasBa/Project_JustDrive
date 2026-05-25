@@ -15,6 +15,6 @@ namespace Project_JustDrive.Models
         public string CarBrand { get; set; }
         public string CarModel { get; set; }
         public decimal PricePerDay { get; set; }
-        public string ImagePath { get; set; }
+        public byte[] ImageData { get; set; }
     }
 }

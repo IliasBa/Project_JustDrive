@@ -16,12 +16,13 @@ namespace Project_JustDrive.Services
                 conn.Open();
 
                 string query = @"SELECT c.Id, cn.Brand, cn.Model, c.TYPE, c.Fuel, 
-                                c.Transmission, c.Price_Per_Day, c.Deposit, 
-                                c.Price_Per_100km,c.Image_Path, u.City
-                         FROM car c
-                         JOIN carname cn ON cn.Id = c.CarNameId
-                         JOIN user u ON u.User_Id = c.CompanyId
-                         WHERE c.Id = @id";
+                        c.Transmission, c.Price_Per_Day, c.Deposit, 
+                        c.Price_Per_100km, c.Image_Data, u.City
+                 FROM car c
+                 JOIN carname cn ON cn.Id = c.CarNameId
+                 JOIN user u ON u.User_Id = c.CompanyId
+                 WHERE c.Id = @id";
+
 
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", carId);
@@ -41,7 +42,7 @@ namespace Project_JustDrive.Services
                         Deposit = Convert.ToDecimal(reader["Deposit"]),
                         PricePerKm = Convert.ToDecimal(reader["Price_Per_100km"]),
                         City = reader["City"].ToString(),
-                        ImagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString()
+                        ImageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"]
 
                     };
                 }

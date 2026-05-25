@@ -6,32 +6,29 @@ namespace Project_JustDrive.Services
 {
     public static class ImageHelper
     {
-        public static string GetFilePath(string packPath)
+        public static BitmapImage LoadFromBytes(byte[] data)
         {
-            if (string.IsNullOrEmpty(packPath)) return null;
-
-            string fileName = Path.GetFileName(packPath);
-            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            string projectDir = Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
-            string filePath = Path.Combine(projectDir, "Images", fileName);
-
-            return File.Exists(filePath) ? filePath : null;
-        }
-
-        public static BitmapImage LoadImage(string packPath)
-        {
+            if (data == null || data.Length == 0) return null;
             try
             {
-                string filePath = GetFilePath(packPath);
-                if (string.IsNullOrEmpty(filePath)) return null;
-
                 var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.UriSource = new Uri(filePath);
-                bitmap.CacheOption = BitmapCacheOption.OnLoad;
-                bitmap.EndInit();
+                using (var stream = new System.IO.MemoryStream(data))
+                {
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = stream;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                }
                 return bitmap;
             }
+            catch { return null; }
+        }
+
+        public static byte[] LoadFromFile(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath)) return null;
+            try { return System.IO.File.ReadAllBytes(filePath); }
             catch { return null; }
         }
     }

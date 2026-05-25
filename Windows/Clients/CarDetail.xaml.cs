@@ -13,7 +13,7 @@ namespace Project_JustDrive.Windows.Clients
         private int _carId;
         private int _userId;
         private decimal _pricePerDay;
-        private string _imagePath;
+        private byte[] _imageData;
 
         public CarDetail(int carId, int userId)
         {
@@ -55,23 +55,13 @@ namespace Project_JustDrive.Windows.Clients
                     TxtNummerplaat.Text = reader["LicensePlate"].ToString();
                     TxtPrijs.Text = "€" + _pricePerDay;
 
-                    _imagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString();
+                    _imageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"];    
                 }
             }
         }
         private void CarDetail_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(_imagePath))
-            {
-                try
-                {
-                    ImgCar.Source = ImageHelper.LoadImage(_imagePath);
-                }
-                catch
-                {
-                    ImgCar.Source = null;
-                }
-            }
+            ImgCar.Source = ImageHelper.LoadFromBytes(_imageData); // ← changed
         }
 
         private void DateChanged(object sender, SelectionChangedEventArgs e)
@@ -110,7 +100,6 @@ namespace Project_JustDrive.Windows.Clients
                 return;
             }
 
-            
             if (IsCarAlreadyBooked(DpStart.SelectedDate.Value, DpEnd.SelectedDate.Value))
             {
                 MessageBox.Show("Deze auto is al gereserveerd voor de geselecteerde periode.");
@@ -124,6 +113,8 @@ namespace Project_JustDrive.Windows.Clients
                 using (var conn = DatabaseConnection.GetConnection())
                 {
                     conn.Open();
+
+                    // Insert reservation
                     string query = @"INSERT INTO reservation (Start_date, End_date, Total_price, CustomerId, CarId)
                              VALUES (@start, @end, @total, @customerId, @carId)";
                     var cmd = new MySqlCommand(query, conn);
@@ -134,7 +125,57 @@ namespace Project_JustDrive.Windows.Clients
                     cmd.Parameters.AddWithValue("@carId", _carId);
                     cmd.ExecuteNonQuery();
 
+                    // Get reservation Id
+                    int reservationId = Convert.ToInt32(cmd.LastInsertedId);
+
+                    // Get company data
+                    string companyQuery = @"SELECT co.Company_Name, u.Adres, u.Postcode, u.City, 
+                                           u.Phone_Number, u.Email, co.IBAN
+                                    FROM car c
+                                    JOIN company co ON co.UserId = c.CompanyId
+                                    JOIN user u ON u.User_Id = c.CompanyId
+                                    WHERE c.Id = @carId";
+                    var companyCmd = new MySqlCommand(companyQuery, conn);
+                    companyCmd.Parameters.AddWithValue("@carId", _carId);
+                    var companyReader = companyCmd.ExecuteReader();
+
+                    string companyName = "", companyAdres = "", companyPostcode = "",
+                           companyCity = "", companyPhone = "", companyEmail = "", companyIban = "";
+
+                    if (companyReader.Read())
+                    {
+                        companyName = companyReader["Company_Name"].ToString();
+                        companyAdres = companyReader["Adres"].ToString();
+                        companyPostcode = companyReader["Postcode"].ToString();
+                        companyCity = companyReader["City"].ToString();
+                        companyPhone = companyReader["Phone_Number"].ToString();
+                        companyEmail = companyReader["Email"].ToString();
+                        companyIban = companyReader["IBAN"].ToString();
+                    }
+                    companyReader.Close();
+
                     MessageBox.Show($"Reservatie geplaatst! Totaal: €{total}");
+
+                    // Send confirmation email
+                    EmailService.SendReservationConfirmation(
+                        Session.CurrentUser.Email,
+                        Session.CurrentCustomer.FirstName,
+                        TxtNaam.Text,
+                        DpStart.SelectedDate.Value,
+                        DpEnd.SelectedDate.Value,
+                        total,
+
+                        reservationId,
+                        companyName,
+                        companyAdres,
+                        companyPostcode,
+                        companyCity,
+                        companyPhone,
+                        companyEmail,
+                        companyIban
+                        
+                    );
+
                     RentCar rentCar = new RentCar(_userId);
                     rentCar.Show();
                     this.Close();

@@ -160,9 +160,9 @@
                                 <Border Style="{StaticResource Card}" Margin="0,0,20,20">
                                     <StackPanel>
                                         <Border Height="180" Background="#1F2937" CornerRadius="12,12,0,0"
-                                                ClipToBounds="True">
-                                            <Image Source="{Binding ImagePath}" Stretch="UniformToFill"
-                                                    VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    ClipToBounds="True">
+                                            <Image Source="{Binding CarImage}" Stretch="UniformToFill"
+                                                            VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                         </Border>
                                         <StackPanel Margin="20">
                                             <TextBlock Text="{Binding CarBrand}" FontSize="18" FontWeight="Bold"/>
