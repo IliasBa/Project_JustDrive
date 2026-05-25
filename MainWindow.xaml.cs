@@ -6,6 +6,7 @@ using Project_JustDrive.Windows;
 using Project_JustDrive.Windows.Admin;
 using Project_JustDrive.Windows.Company;
 using System;
+using System.IO;
 using System.Windows;
 
 namespace Project_JustDrive
@@ -16,7 +17,6 @@ namespace Project_JustDrive
         {
             InitializeComponent();
         }
-
         private void Login_Click(object sender, RoutedEventArgs e)
         {
             string email = TxtEmail.Text;

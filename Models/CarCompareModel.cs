@@ -18,9 +18,11 @@ namespace Project_JustDrive.Models
         public decimal Deposit { get; set; }
         public decimal PricePerKm { get; set; }
         public string City { get; set; }
-        public string ImagePath { get; set; } 
+        public string ImagePath { get; set; }
 
-        public BitmapImage CarImage => ImageHelper.LoadImage(ImagePath);
+        public byte[] ImageData { get; set; }
+
+        public BitmapImage CarImage => ImageHelper.LoadFromBytes(ImageData);    
 
     }
 }

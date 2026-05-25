@@ -13,7 +13,10 @@ namespace Project_JustDrive.Windows
         private string _verificationCode;
         private string _userEmail;
 
+<<<<<<< HEAD
         // ⚠️ Vul later in met Combell gegevens
+=======
+>>>>>>> Redou4
         private const string SMTP_HOST = "smtp-auth.mailprotect.be";
         private const int SMTP_PORT = 587;
         private const string SMTP_EMAIL = "no-reply@projectinspirationlab.com";

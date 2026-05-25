@@ -9,9 +9,9 @@ namespace Project_JustDrive.Models
     public class Car
     {
         public int Id { get; set; }
-        public int CarNameId { get; set; }   
-        public string CarBrand { get; set; } 
-        public string Model { get; set; }   
+        public int CarNameId { get; set; }
+        public string CarBrand { get; set; }
+        public string Model { get; set; }
         public decimal PricePerDay { get; set; }
         public decimal Deposit { get; set; }
         public int CompanyId { get; set; }
@@ -20,8 +20,8 @@ namespace Project_JustDrive.Models
         public string Transmission { get; set; }
         public string Type { get; set; }
         public string LicensePlate { get; set; }
-        public string? ImagePath { get; set; }
+        public byte[] ImageData { get; set; }  // ← changed from string ImagePath
 
-        public BitmapImage CarImage => ImageHelper.LoadImage(ImagePath);
+        public BitmapImage CarImage => ImageHelper.LoadFromBytes(ImageData);
     }
 }

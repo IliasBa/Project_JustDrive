@@ -59,14 +59,14 @@ namespace Project_JustDrive.Windows.Clients
                     AllCars.Add(new Car
                     {
                         Id = Convert.ToInt32(reader["Id"]),
-                        CarBrand = reader["Brand"].ToString(),      
-                        Model = reader["Model"].ToString(),         
+                        CarBrand = reader["Brand"].ToString(),
+                        Model = reader["Model"].ToString(),
                         Type = reader["TYPE"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         Fuel = reader["Fuel"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         CompanyId = Convert.ToInt32(reader["CompanyId"]),
-                        ImagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString()
+                        ImageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"] // ← changed
                     });
                 }
             }

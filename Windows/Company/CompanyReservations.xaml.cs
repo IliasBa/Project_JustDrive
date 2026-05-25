@@ -26,6 +26,7 @@ namespace Project_JustDrive.Windows.Company
             {
                 conn.Open();
                 string query = @"SELECT 
+<<<<<<< HEAD
                     CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
                     CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
                     r.Start_date AS StartDate,
@@ -37,6 +38,33 @@ namespace Project_JustDrive.Windows.Company
                 INNER JOIN customer cu ON r.CustomerId = cu.UserId
                 WHERE c.CompanyId = @id
                 ORDER BY r.Start_date DESC";
+=======
+<<<<<<< Updated upstream
+                            CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
+                            CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
+                            r.Start_date AS StartDate,
+                            r.End_date AS EndDate,
+                            r.Total_price AS TotalPrice
+                         FROM reservation r
+                         INNER JOIN car c ON r.CarId = c.Id
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         INNER JOIN customer cu ON r.CustomerId = cu.UserId
+                         WHERE c.CompanyId = @id
+                         ORDER BY r.Start_date DESC";
+=======
+    CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
+    CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
+    r.Start_date AS StartDate,
+    r.End_date AS EndDate,
+    r.Total_price AS TotalPrice
+FROM reservation r
+INNER JOIN car c ON r.CarId = c.Id
+JOIN carname cn ON cn.Id = c.CarNameId
+INNER JOIN customer cu ON r.CustomerId = cu.UserId
+WHERE c.CompanyId = @id
+ORDER BY r.Start_date DESC";
+>>>>>>> Stashed changes
+>>>>>>> Redou4
 
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", _userId);
@@ -61,13 +89,27 @@ namespace Project_JustDrive.Windows.Company
                         Status = status
                     });
                 }
+
+                TxtTotaal.Text = reservations.Count.ToString();
+                TxtActief.Text = actief.ToString();
+                TxtAfgerond.Text = afgerond.ToString();
+                TxtAantal.Text = $"{reservations.Count} reservaties gevonden";
             }
 
+<<<<<<< HEAD
             ReservationsPanel.ItemsSource = reservations;
             TxtTotaal.Text = reservations.Count.ToString();
             TxtActief.Text = actief.ToString();
             TxtAfgerond.Text = afgerond.ToString();
             TxtAantal.Text = $"{reservations.Count} reservaties gevonden";
+=======
+<<<<<<< Updated upstream
+            ReservationsGrid.ItemsSource = reservations;
+=======
+            ReservationsPanel.ItemsSource = reservations;
+            
+>>>>>>> Stashed changes
+>>>>>>> Redou4
         }
 
 

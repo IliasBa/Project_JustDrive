@@ -239,19 +239,10 @@
                                     <StackPanel>
 
                                         <!-- IMAGE / TOP -->
-                                        <Border Height="180" Background="#1F2937" CornerRadius="12,12,0,0">
-                                            <Image Stretch="UniformToFill">
-                                                <Image.Style>
-                                                    <Style TargetType="Image">
-                                                        <Setter Property="Source" Value="{Binding ImagePath}"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding ImagePath}" Value="">
-                                                                <Setter Property="Source" Value="{x:Null}"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Image.Style>
-                                            </Image>
+                                        <Border Height="180" Background="#1F2937" CornerRadius="12,12,0,0"
+                                                ClipToBounds="True">
+                                            <Image Source="{Binding CarImage}" Stretch="UniformToFill"
+                                                      VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                         </Border>
 
                                         <!-- CONTENT -->

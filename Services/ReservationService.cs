@@ -22,7 +22,7 @@ namespace Project_JustDrive.Services
                 conn.Open();
 
                 string query = @"SELECT r.Id, r.Start_date, r.End_date, r.CarId,
-                                cn.Brand, cn.Model, c.Price_Per_Day, c.Image_Path
+                                cn.Brand, cn.Model, c.Price_Per_Day, c.Image_Data
                          FROM reservation r
                          JOIN car c ON c.Id = r.CarId
                          JOIN carname cn ON cn.Id = c.CarNameId
@@ -44,11 +44,10 @@ namespace Project_JustDrive.Services
                         CarModel = reader["Model"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         CarId = Convert.ToInt32(reader["CarId"]),
-                        ImagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString()
+                        ImageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"]
                     });
                 }
             }
-
             return reservations;
         }
 
@@ -59,7 +58,7 @@ namespace Project_JustDrive.Services
                 conn.Open();
 
                 string query = @"SELECT r.Id, r.Start_date, r.End_date, r.CarId,
-                                cn.Brand, cn.Model, c.Price_Per_Day, c.Image_Path
+                                cn.Brand, cn.Model, c.Price_Per_Day, c.Image_Data
                          FROM reservation r
                          JOIN car c ON c.Id = r.CarId
                          JOIN carname cn ON cn.Id = c.CarNameId
@@ -83,7 +82,7 @@ namespace Project_JustDrive.Services
                         CarModel = reader["Model"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         CarId = Convert.ToInt32(reader["CarId"]),
-                        ImagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString()
+                        ImageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"]
                     };
                 }
 
@@ -100,7 +99,7 @@ namespace Project_JustDrive.Services
                 conn.Open();
 
                 string query = @"SELECT r.Id, r.Start_date, r.End_date, r.CarId,
-                                cn.Brand, cn.Model, c.Price_Per_Day, c.Image_Path
+                                cn.Brand, cn.Model, c.Price_Per_Day, c.Image_Data
                          FROM reservation r
                          JOIN car c ON c.Id = r.CarId
                          JOIN carname cn ON cn.Id = c.CarNameId
@@ -123,7 +122,7 @@ namespace Project_JustDrive.Services
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         StartDate = Convert.ToDateTime(reader["Start_date"]),
                         EndDate = Convert.ToDateTime(reader["End_date"]),
-                        ImagePath = reader["Image_Path"] == DBNull.Value ? null : reader["Image_Path"].ToString()
+                        ImageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"]
                     });
                 }
             }

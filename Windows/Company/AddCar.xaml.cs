@@ -15,6 +15,7 @@ namespace Project_JustDrive.Windows.Company
         private string _selectedImagePath;
         private string _selectedBrand;
         private string _selectedModel;
+        private byte[] _selectedImageData;
 
         public AddCar(int userId)
         {
@@ -119,12 +120,6 @@ namespace Project_JustDrive.Windows.Company
 
         private void BtnFotoKiezen_Click(object sender, RoutedEventArgs e)
         {
-            if (CmbMerk.SelectedItem == null || CmbModel.SelectedItem == null)
-            {
-                MessageBox.Show("Kies eerst een merk en model.");
-                return;
-            }
-
             OpenFileDialog dialog = new OpenFileDialog
             {
                 Filter = "Image files (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png"
@@ -132,24 +127,19 @@ namespace Project_JustDrive.Windows.Company
 
             if (dialog.ShowDialog() == true)
             {
-                string brand = CmbMerk.SelectedItem.ToString();
-                string model = CmbModel.SelectedItem.ToString().Replace(" ", "_");
-                string fileName = $"{brand}_{model}.jpg";
+                _selectedImageData = System.IO.File.ReadAllBytes(dialog.FileName);
 
-                // Save to project Images folder
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string projectDir = System.IO.Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
-                string imagesFolder = System.IO.Path.Combine(projectDir, "Images");
-
-                System.IO.Directory.CreateDirectory(imagesFolder);
-                string destinationPath = System.IO.Path.Combine(imagesFolder, fileName);
-
-                System.IO.File.Copy(dialog.FileName, destinationPath, true);
-
-                _selectedImagePath = $"pack://application:,,,/Images/{fileName}";
-
-                // Use file path for preview
-                ImgPreview.Source = new BitmapImage(new Uri(destinationPath));
+                // Show preview
+                var bitmap = new BitmapImage();
+                using (var stream = new System.IO.MemoryStream(_selectedImageData))
+                {
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = stream;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                }
+                ImgPreview.Source = bitmap;
             }
         }
 
@@ -183,13 +173,11 @@ namespace Project_JustDrive.Windows.Company
                         CmbModel.SelectedItem.ToString());
 
                     string query = @"INSERT INTO car 
-                                (CarNameId, TYPE, Fuel, Transmission, 
-                                Price_Per_Day, Deposit, Price_Per_100km, LicensePlate, CompanyId, Image_Path)
-                                     VALUES 
-                                    (@carNameId, @type, @brandstof, @transmissie,
-                                     @prijs, @borg, @verbruik, @nummerplaat, @companyId, @imagePath)";
-
-                    
+                (CarNameId, TYPE, Fuel, Transmission, 
+                 Price_Per_Day, Deposit, Price_Per_100km, LicensePlate, CompanyId, Image_Data)
+                VALUES 
+                (@carNameId, @type, @brandstof, @transmissie,
+                 @prijs, @borg, @verbruik, @nummerplaat, @companyId, @imageData)";
 
                     var cmd = new MySqlCommand(query, conn);
                     cmd.Parameters.AddWithValue("@carNameId", carNameId);
@@ -201,7 +189,7 @@ namespace Project_JustDrive.Windows.Company
                     cmd.Parameters.AddWithValue("@verbruik", verbruik);
                     cmd.Parameters.AddWithValue("@nummerplaat", TxtNummerplaat.Text);
                     cmd.Parameters.AddWithValue("@companyId", _userId);
-                    cmd.Parameters.AddWithValue("@imagePath", _selectedImagePath ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@imageData",_selectedImageData ?? (object)DBNull.Value);
                     cmd.ExecuteNonQuery();
 
                     MessageBox.Show("Auto succesvol toegevoegd!");

@@ -30,11 +30,6 @@ namespace Project_JustDrive.Windows.Clients
             txtWelcome.Text += Session.CurrentCustomer.FirstName;
             txtProfileInitials.Text = $"{Session.CurrentCustomer.FirstName[0]}{Session.CurrentCustomer.LastName[0]}";
         }
-
-        private void Zoeken_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Auto's zoeken komt binnenkort!");
-        }
         private void HuurAuto_Click(object sender, RoutedEventArgs e)
         {
             RentCar rentCarWindow = new RentCar(_userId);
@@ -71,7 +66,7 @@ namespace Project_JustDrive.Windows.Clients
                 CarId = r.CarId,
                 CarName = $"{r.CarBrand} {r.CarModel}",
                 PricePerDayFormatted = $"€ {r.PricePerDay}",
-                ImagePath = r.ImagePath,
+                ImageData = r.ImageData,
                 StartDate = r.StartDate,
                 EndDate = r.EndDate
             }).ToList();
@@ -107,18 +102,7 @@ namespace Project_JustDrive.Windows.Clients
                 txtActivePrice.Text = $"€ {active.PricePerDay}";
                 gridActiveReservation.Visibility = Visibility.Visible;
                 stackNoActive.Visibility = Visibility.Collapsed;
-
-                if (!string.IsNullOrEmpty(active.ImagePath))
-                {
-                    try
-                    {
-                        ImgActivecar.Source = ImageHelper.LoadImage(active.ImagePath);
-                    }
-                    catch
-                    {
-                        ImgActivecar.Source = null;
-                    }
-                }
+                ImgActivecar.Source = ImageHelper.LoadFromBytes(active.ImageData);
             }
             else
             {
@@ -144,7 +128,7 @@ namespace Project_JustDrive.Windows.Clients
                     ReservationId = r.Id,
                     CarName = $"{r.CarBrand} {r.CarModel}",
                     Price = $"€ {r.PricePerDay}",
-                    ImagePath = r.ImagePath,
+                    ImageData = r.ImageData,
                     StartDate = r.StartDate,
                     EndDate = r.EndDate
                 }).ToList();
@@ -193,6 +177,13 @@ namespace Project_JustDrive.Windows.Clients
                 {
                     ReservationService service = new ReservationService();
                     service.CancelReservation(reservation.ReservationId);
+                    EmailService.SendCancellationConfirmation(
+                            Session.CurrentUser.Email,
+                            Session.CurrentCustomer.FirstName,
+                            reservation.CarName,
+                            reservation.StartDate,
+                            reservation.EndDate,
+                            reservation.ReservationId);
 
                     LoadActiveReservation();
                     LoadFutureReservations();
