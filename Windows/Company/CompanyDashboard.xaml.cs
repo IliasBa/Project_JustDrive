@@ -70,7 +70,7 @@ namespace Project_JustDrive.Windows.Company
                 TxtOmzet.Text = "€" + omzetCmd.ExecuteScalar().ToString();
 
                 // Recente reservaties
-                string recentQuery = @"SELECT 
+                string recentQuery = @"SELECT r.Id as ReservationId,
                                 CONCAT(cu.First_Name, ' ', cu.Last_Name) AS KlantNaam,
                                 CONCAT(cn.Brand, ' ', cn.Model) AS AutoNaam,
                                 r.Start_date AS StartDate,
@@ -82,7 +82,7 @@ namespace Project_JustDrive.Windows.Company
                                INNER JOIN customer cu ON r.CustomerId = cu.UserId
                                WHERE c.CompanyId = @id
                                ORDER BY r.Start_date DESC
-                               LIMIT 5";
+                               LIMIT 10";
                 var recentCmd = new MySqlCommand(recentQuery, conn);
                 recentCmd.Parameters.AddWithValue("@id", _userId);
                 var recentReader = recentCmd.ExecuteReader();
@@ -92,6 +92,7 @@ namespace Project_JustDrive.Windows.Company
                 {
                     reservaties.Add(new
                     {
+                        ReservatieId = recentReader["ReservationId"].ToString(),
                         KlantNaam = recentReader["KlantNaam"].ToString(),
                         AutoNaam = recentReader["AutoNaam"].ToString(),
                         StartDate = Convert.ToDateTime(recentReader["StartDate"]).ToString("dd/MM/yyyy"),
@@ -100,6 +101,85 @@ namespace Project_JustDrive.Windows.Company
                     });
                 }
                 RecenteReservaties.ItemsSource = reservaties;
+            }
+        }
+
+        private void ExportCSV_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var saveDialog = new Microsoft.Win32.SaveFileDialog
+                {
+                    FileName = $"JustDrive_Export_{DateTime.Now:yyyyMMdd}",
+                    DefaultExt = ".csv",
+                    Filter = "CSV files (*.csv)|*.csv"
+                };
+
+                if (saveDialog.ShowDialog() == true)
+                {
+                    using (var conn = DatabaseConnection.GetConnection())
+                    {
+                        conn.Open();
+
+                        string query = @"SELECT 
+                                            r.Id AS ReservatieId,
+                                            CONCAT(cu.First_Name, ' ', cu.Last_Name) AS Klant,
+                                            u.Email AS KlantEmail,
+                                            CONCAT(cn.Brand, ' ', cn.Model) AS Auto,
+                                            c.TYPE AS Type,
+                                            c.Fuel AS Brandstof,
+                                            c.Transmission AS Transmissie,
+                                            r.Start_date AS Startdatum,
+                                            r.End_date AS Einddatum,
+                                            DATEDIFF(r.End_date, r.Start_date) AS AantalDagen,
+                                            c.Price_Per_Day AS PrijsPerDag,
+                                            r.Total_price AS TotaalPrijs
+                                        FROM reservation r
+                                        JOIN car c ON c.Id = r.CarId
+                                        JOIN carname cn ON cn.Id = c.CarNameId
+                                        JOIN customer cu ON cu.UserId = r.CustomerId
+                                        JOIN user u ON u.User_Id = cu.UserId
+                                        WHERE c.CompanyId = @companyId
+                                        ORDER BY r.Start_date DESC";
+
+                        var cmd = new MySqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@companyId", _userId);
+                        var reader = cmd.ExecuteReader();
+
+                        var sb = new System.Text.StringBuilder();
+
+                        sb.AppendLine("ReservatieId;Klant;KlantEmail;Auto;Type;Brandstof;" +
+                                      "Transmissie;Startdatum;Einddatum;AantalDagen;" +
+                                      "PrijsPerDag;TotaalPrijs");
+
+                        while (reader.Read())
+                        {
+                            sb.AppendLine(
+                                $"{reader["ReservatieId"]};" +
+                                $"{reader["Klant"]};" +
+                                $"{reader["KlantEmail"]};" +
+                                $"{reader["Auto"]};" +
+                                $"{reader["Type"]};" +
+                                $"{reader["Brandstof"]};" +
+                                $"{reader["Transmissie"]};" +
+                                $"{Convert.ToDateTime(reader["Startdatum"]):dd/MM/yyyy};" +
+                                $"{Convert.ToDateTime(reader["Einddatum"]):dd/MM/yyyy};" +
+                                $"{reader["AantalDagen"]};" +
+                                $"{reader["PrijsPerDag"]};" +
+                                $"{reader["TotaalPrijs"]};"
+                            );
+                        }
+
+                        System.IO.File.WriteAllText(saveDialog.FileName, sb.ToString(),
+                            System.Text.Encoding.UTF8);
+
+                        MessageBox.Show($"Data succesvol geëxporteerd naar:\n{saveDialog.FileName}");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Fout bij exporteren: {ex.Message}");
             }
         }
 

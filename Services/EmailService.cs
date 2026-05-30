@@ -43,6 +43,31 @@ namespace Project_JustDrive.Services
             }
         }
 
+        public static async Task SendVerificationCodeAsync(string toEmail, string code)
+        {
+            string subject = "JustDrive - Verificatiecode";
+            string body = $@"
+                <html>
+                <body style='font-family: Arial, sans-serif; color: #0F1B2D;'>
+                    <div style='max-width: 600px; margin: 0 auto; padding: 20px;'>
+                        <h1 style='color: #F26B1F;'>Just Drive<span style='color: #F26B1F;'>.</span></h1>
+                        <p>Hallo,</p>
+                        <p>Je verificatiecode is:</p>
+                        <div style='background: #F5F6F8; padding: 20px; border-radius: 8px; 
+                                    text-align: center; margin: 20px 0;'>
+                            <h2 style='font-size: 36px; letter-spacing: 8px; color: #F26B1F;'>{code}</h2>
+                        </div>
+                        <p>Deze code is geldig voor eenmalig gebruik.</p>
+                        <p style='color: #6B7280; font-size: 12px;'>
+                            Dit is een automatisch gegenereerde e-mail.
+                        </p>
+                    </div>
+                </body>
+                </html>";
+
+            SendEmail(toEmail, subject, body);
+        }
+
         public static void SendReservationConfirmation(string toEmail, string firstName,
         string carName, DateTime startDate, DateTime endDate, decimal totalPrice,
         int reservationId, string companyName, string companyAdres, string companyPostcode,

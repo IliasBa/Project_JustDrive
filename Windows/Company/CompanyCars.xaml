@@ -165,6 +165,20 @@
                               HeadersVisibility="Column" CanUserDeleteRows="False"
                               CanUserAddRows="False">
                         <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Foto" Width="100">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Border Width="80" Height="55" CornerRadius="6" 
+                            Background="#1F2937" ClipToBounds="True"
+                            Margin="4">
+                                            <Image Source="{Binding CarImage}" Stretch="UniformToFill"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="60" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Merk" Binding="{Binding CarBrand}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Model" Binding="{Binding Model}" Width="*" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Type" Binding="{Binding Type}" Width="*" IsReadOnly="True"/>
@@ -177,9 +191,10 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="Bewerken" Style="{StaticResource PrimaryButton}"
-                                                Padding="12,8" Margin="0,0,8,0"
+                                                Padding="10" Margin="0,0,10,0"
                                                 Click="Bewerken_Click"/>
                                             <Button Content="Verwijderen" Style="{StaticResource DangerButton}"
+                                                    Padding="10"
                                                     Click="Verwijderen_Click"/>
                                         </StackPanel>
                                     </DataTemplate>

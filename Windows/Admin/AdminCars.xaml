@@ -200,10 +200,10 @@
                                     </Grid.ColumnDefinitions>
 
                                     <!-- Icoon -->
-                                    <Border Grid.Column="0" Width="45" Height="45" CornerRadius="10"
-                                            Background="#FFF5F0" Margin="0,0,16,0">
-                                        <TextBlock Text="🚗" FontSize="20"
-                                                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="0" Width="80" Height="55" CornerRadius="8"
+                                            Background="#1F2937" Margin="0,0,16,0" ClipToBounds="True">
+                                            <Image Source="{Binding CarImage}" Stretch="UniformToFill"
+                                             VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Border>
 
                                     <!-- Auto naam -->
@@ -244,6 +244,10 @@
                                     <!-- Knoppen -->
                                     <StackPanel Grid.Column="5" Orientation="Horizontal"
                                                 VerticalAlignment="Center" Margin="8,0,0,0">
+                                        <Button Content="Bewerken"
+                                                Style="{StaticResource PrimaryButton}"
+                                                Margin="0,0,8,0"
+                                                Click="Bewerken_Click"/>
                                         <Button Content="Verwijderen"
                                                 Style="{StaticResource DangerButton}"
                                                 Click="Verwijder_Click"/>

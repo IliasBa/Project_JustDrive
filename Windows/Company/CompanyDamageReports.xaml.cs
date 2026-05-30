@@ -49,7 +49,7 @@ namespace Project_JustDrive.Windows.Company
                         KlantNaam = reader["KlantNaam"].ToString(),
                         AutoNaam = reader["AutoNaam"].ToString(),
                         ReservatieDatum = Convert.ToDateTime(reader["ReservatieDatum"]).ToString("dd/MM/yyyy"),
-                        Schadeniveau = reader["Schadeniveau"].ToString(),  // ← add
+                        Schadeniveau = reader["Schadeniveau"].ToString(),  
                         Beschrijving = reader["Beschrijving"].ToString()
                     });
                 }

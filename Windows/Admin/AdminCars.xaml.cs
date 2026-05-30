@@ -1,5 +1,8 @@
 ﻿using JustDrive.Database;
 using MySql.Data.MySqlClient;
+using Project_JustDrive.Models;
+using Project_JustDrive.Services;
+using Project_JustDrive.Windows.Company;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +59,7 @@ namespace Project_JustDrive.Windows.Admin
                         c.Fuel,
                         c.Transmission,
                         c.LicensePlate,
+                        c.Image_Data,
                         co.Company_Name AS BedrijfNaam
                     FROM car c
                     INNER JOIN carname cn ON c.CarNameId = cn.Id
@@ -67,6 +71,8 @@ namespace Project_JustDrive.Windows.Admin
 
                 while (reader.Read())
                 {
+                    byte[] imageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"];
+                    
                     _allCars.Add(new
                     {
                         Id = Convert.ToInt32(reader["Id"]),
@@ -76,7 +82,9 @@ namespace Project_JustDrive.Windows.Admin
                         Fuel = reader["Fuel"].ToString(),
                         Transmission = reader["Transmission"].ToString(),
                         LicensePlate = reader["LicensePlate"].ToString(),
-                        BedrijfNaam = reader["BedrijfNaam"].ToString()
+                        BedrijfNaam = reader["BedrijfNaam"].ToString(),
+                        CarImage = ImageHelper.LoadFromBytes(imageData)
+
                     });
                 }
             }
@@ -101,6 +109,45 @@ namespace Project_JustDrive.Windows.Admin
                 var filtered = _allCars.Where(c => c.BedrijfNaam == selected).ToList();
                 CarsPanel.ItemsSource = filtered;
                 TxtAantal.Text = $"{filtered.Count} auto's gevonden";
+            }
+        }
+        private void Bewerken_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+            dynamic auto = btn.DataContext;
+
+            using (var conn = DatabaseConnection.GetConnection())
+            {
+                conn.Open();
+                string query = @"SELECT c.*, cn.Brand, cn.Model 
+                         FROM car c
+                         JOIN carname cn ON cn.Id = c.CarNameId
+                         WHERE c.Id = @id";
+                var cmd = new MySqlCommand(query, conn);
+                cmd.Parameters.AddWithValue("@id", auto.Id);
+                var reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    Car car = new Car
+                    {
+                        Id = Convert.ToInt32(reader["Id"]),
+                        CarBrand = reader["Brand"].ToString(),
+                        Model = reader["Model"].ToString(),
+                        Type = reader["TYPE"].ToString(),
+                        Fuel = reader["Fuel"].ToString(),
+                        Transmission = reader["Transmission"].ToString(),
+                        LicensePlate = reader["LicensePlate"].ToString(),
+                        PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
+                        Deposit = Convert.ToDecimal(reader["Deposit"])
+                    };
+
+                    reader.Close();
+
+                    EditCar editCar = new EditCar(car, _userId);
+                    editCar.ShowDialog();
+                    LoadCars();
+                }
             }
         }
 
@@ -138,7 +185,6 @@ namespace Project_JustDrive.Windows.Admin
                 MessageBox.Show("Auto verwijderd!");
             }
         }
-
         private void Dashboard_Click(object sender, RoutedEventArgs e)
         {
             AdminDashboard dashboard = new AdminDashboard(_userId);

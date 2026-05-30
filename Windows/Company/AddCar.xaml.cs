@@ -12,7 +12,7 @@ namespace Project_JustDrive.Windows.Company
     public partial class AddCar : Window
     {
         private int _userId;
-        private string _selectedImagePath;
+
         private string _selectedBrand;
         private string _selectedModel;
         private byte[] _selectedImageData;

@@ -204,6 +204,11 @@
                                 <Button Grid.Column="1" Content="Alle bekijken"
                                         Style="{StaticResource PrimaryButton}"
                                         Click="Reservaties_Click"/>
+                                <Button Content="Exporteer data naar CSV" 
+                                        Style="{StaticResource PrimaryButton}"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,10,0"
+                                        Click="ExportCSV_Click"/>
                             </Grid>
 
                             <DataGrid x:Name="RecenteReservaties" AutoGenerateColumns="False"
@@ -212,6 +217,7 @@
                                       RowBackground="Transparent" AlternatingRowBackground="#F9FAFB"
                                       HeadersVisibility="Column">
                                 <DataGrid.Columns>
+                                    <DataGridTextColumn Header="ReservationId" Binding="{Binding ReservatieId, StringFormat='# {0}'}" Width="*"/>
                                     <DataGridTextColumn Header="Klant" Binding="{Binding KlantNaam}" Width="*"/>
                                     <DataGridTextColumn Header="Auto" Binding="{Binding AutoNaam}" Width="*"/>
                                     <DataGridTextColumn Header="Van" Binding="{Binding StartDate}" Width="*"/>

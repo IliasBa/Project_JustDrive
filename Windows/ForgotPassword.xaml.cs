@@ -12,10 +12,10 @@ namespace Project_JustDrive.Windows
     {
         private string _verificationCode;
         private string _userEmail;
-        private const string SMTP_HOST = "smtp-auth.mailprotect.be";
-        private const int SMTP_PORT = 587;
-        private const string SMTP_EMAIL = "no-reply@projectinspirationlab.com";
-        private const string SMTP_PASSWORD = "azertyno-reply2026?";
+        //private const string SMTP_HOST = "smtp-auth.mailprotect.be";
+        //private const int SMTP_PORT = 587;
+        //private const string SMTP_EMAIL = "no-reply@projectinspirationlab.com";
+        //private const string SMTP_PASSWORD = "azertyno-reply2026?";
 
         public ForgotPassword()
         {
@@ -48,34 +48,12 @@ namespace Project_JustDrive.Windows
             _userEmail = TxtEmail.Text;
             _verificationCode = new Random().Next(100000, 999999).ToString();
 
-            try
-            {
-                await System.Threading.Tasks.Task.Run(() =>
-                {
-                    var mail = new MailMessage();
-                    mail.From = new MailAddress(SMTP_EMAIL, "JustDrive");
-                    mail.To.Add(_userEmail);
-                    mail.Subject = "JustDrive - Verificatiecode";
-                    mail.Body = $"Hallo,\n\nJe verificatiecode is: {_verificationCode}";
+            EmailService.SendVerificationCodeAsync(_userEmail, _verificationCode);
 
-                    var smtp = new SmtpClient(SMTP_HOST, SMTP_PORT)
-                    {
-                        Credentials = new NetworkCredential(SMTP_EMAIL, SMTP_PASSWORD),
-                        EnableSsl = true
-                    };
-
-                    smtp.Send(mail);
-                });
-
-                StapEmail.Visibility = Visibility.Collapsed;
-                StapCode.Visibility = Visibility.Visible;
-                TxtCodeInfo.Text = $"We hebben een verificatiecode gestuurd naar {_userEmail}.";
-                MessageBox.Show("Verificatiecode verstuurd!");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Fout: " + ex.Message);
-            }
+            StapEmail.Visibility = Visibility.Collapsed;
+            StapCode.Visibility = Visibility.Visible;
+            TxtCodeInfo.Text = $"We hebben een verificatiecode gestuurd naar {_userEmail}.";
+            MessageBox.Show("Verificatiecode verstuurd!");
         }
 
         private void BevestigCode_Click(object sender, RoutedEventArgs e)
@@ -92,7 +70,6 @@ namespace Project_JustDrive.Windows
                 return;
             }
 
-            // Ga naar stap 3
             StapCode.Visibility = Visibility.Collapsed;
             StapNieuwWachtwoord.Visibility = Visibility.Visible;
         }

@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using MySql.Data.MySqlClient;
 using Project_JustDrive.Models;
+using Project_JustDrive.Services;
 using System;
 using System.IO;
 using System.Windows;
@@ -14,7 +15,6 @@ namespace Project_JustDrive.Windows.Company
     {
         private Car _car;
         private int _userId; 
-        private string _selectedImagePath;
         private byte[] _selectedImageData;
 
         public EditCar(Car car, int userId)
@@ -33,18 +33,26 @@ namespace Project_JustDrive.Windows.Company
             TxtBorg.Text = _car.Deposit.ToString();
             TxtNummerplaat.Text = _car.LicensePlate;
 
-            // Load PricePer100km from database
             using (var conn = DatabaseConnection.GetConnection())
             {
                 conn.Open();
-                string query = "SELECT Price_Per_100km FROM car WHERE Id = @id";
+                string query = "SELECT Price_Per_100km, Image_Data FROM car WHERE Id = @id";
                 var cmd = new MySqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@id", _car.Id);
-                var result = cmd.ExecuteScalar();
-                TxtVerbruik.Text = result?.ToString();
+                var reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    TxtVerbruik.Text = reader["Price_Per_100km"].ToString();
+
+                    if (reader["Image_Data"] != DBNull.Value)
+                    {
+                        _selectedImageData = (byte[])reader["Image_Data"];
+                        ImgPreview.Source = ImageHelper.LoadFromBytes(_selectedImageData);
+                    }
+                }
             }
 
-            // Set ComboBox values
             foreach (ComboBoxItem item in CmbType.Items)
                 if (item.Content.ToString() == _car.Type)
                     CmbType.SelectedItem = item;

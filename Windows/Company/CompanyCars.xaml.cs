@@ -46,7 +46,8 @@ namespace Project_JustDrive.Windows.Company
                         Transmission = reader["Transmission"].ToString(),
                         PricePerDay = Convert.ToDecimal(reader["Price_Per_Day"]),
                         Deposit = Convert.ToDecimal(reader["Deposit"]),
-                        LicensePlate = reader["LicensePlate"].ToString()
+                        LicensePlate = reader["LicensePlate"].ToString(),
+                        ImageData = reader["Image_Data"] == DBNull.Value ? null : (byte[])reader["Image_Data"]
                     });
                 }
             }

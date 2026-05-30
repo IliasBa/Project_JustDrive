@@ -7,7 +7,7 @@ using JustDrive.Database;
 
 namespace Project_JustDrive.Services
 {
-    class Session
+    internal class Session
     {
         public static User CurrentUser { get; set; }
         public static Customer CurrentCustomer { get; set; }
